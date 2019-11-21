@@ -1,0 +1,43 @@
+
+public class HistoryView extends View {
+	public void showAHistory(String poid, String sold_date) {
+		System.out.println("매물번호: " + poid + ", 거래날짜: " + sold_date);
+	}
+
+	public void loadHistoriesPage() {
+		boolean isThereHistory = false;
+		printPageStart();
+		System.out.println("현재 페이지는 히스토리 관련 페이지입니다.");
+		System.out.println("현재 계정의 히스토리 내역은 아래와 같습니다.");
+		// TODO:
+		// 1. DB에서 해당 계정에 대한 히스토리를 불러옴
+		// 2. 히스토리가 없으면 없다고 출력하고 종료
+		// 3. 히스토리가 있으면 히스토리들을 출력 (showAHistory 이용)
+		printPageEnd();
+
+		if (isThereHistory) {
+			while(loadDetailedHistoryPage());
+		}
+	}
+
+	public boolean loadDetailedHistoryPage() {
+		printPageStart();
+		System.out.println("더 자세하게 보시고 싶으면 해당 매물번호를 입력해주십시오.");
+		System.out.println("뒤로가시고 싶으면 -1을 입력해주십시오.");
+		int posting_id = sc.nextInt();
+		printPageEnd();
+		
+		if(posting_id == -1) {
+			return false;
+		}
+		else {
+
+		// TODO:
+		// 1. 입력받은 매물번호가 자신의 구매, 판매이력이 맞는지 확인
+		// 2. 맞으면 해당 매물에 대한 자세히 데이터를 보여줌
+		// 3. 틀렸으면 실패메시지를 출력
+		}
+		
+		return true;
+	}
+}
