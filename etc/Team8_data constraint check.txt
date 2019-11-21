@@ -1,0 +1,366 @@
+--------------------------------------------
+--TABLE CREATION CHECK-----
+--------------------------------------------
+
+select * from account;
+select * from customer;
+select * from dealer;
+select * from administrator;
+select * from maker;
+select * from model;
+select * from detailed_model;
+select * from color_type;
+select * from engine_displacement;
+select * from transmission;
+select * from fuel_type;
+select * from category;
+select * from vehicle;
+select * from colored;
+select * from fueled;
+select * from orders;
+select * from control;
+
+--------------------------------------------
+-- VEHICLE CONSTRAINT CHECK-----
+--------------------------------------------
+
+--# for each month(2010-01 ~ 2019-09)
+
+select Age, count(*) 
+from vehicle 
+group by(Age) 
+order by(age);
+
+
+--mileage for <10,000 and between (10,000, 200,000) and > 200,000
+
+select count(*)
+from vehicle
+where Mileage < 10000;
+--result: 20
+
+select count(*)
+from vehicle
+where Mileage between 10000 and 200000;
+--result: 382
+
+select count(*)
+from vehicle
+where Mileage > 200000;
+--result: 205
+
+
+--price for <1,000 and between (1,000, 5,000) and > 5,000
+
+select count(*)
+from vehicle
+where Price < 1000;
+--result: 67
+
+select count(*)
+from vehicle
+where Price between 1000 and 5000;
+--result: 250
+
+select count(*)
+from vehicle
+where Price > 5000;
+--result: 290
+
+
+
+-- # for each fuel_type
+-- only one for fuel
+select Funame, count(*)
+from vehicle, fueled, fuel_type
+where vehicle.Poid = fueled.Poid
+and fueled.Fuid = fuel_type.Fuid
+group by(fuel_type.Funame);
+
+--for hybrid
+select count(*)
+from (
+select count(*) 
+from fueled
+group by(fueled.Poid)
+having count(*) > 1
+);
+
+--result: 152
+
+
+-- # for each color_type
+--only one for color
+select Coname, count(*)
+from vehicle, colored, color_type
+where vehicle.Poid = colored.Poid
+and colored.Coid = color_type.Coid
+group by(color_type.Coname);
+
+--for two-tone
+select count(*)
+from (
+select count(*) 
+from colored
+group by(colored.Poid)
+having count(*) > 1
+);
+
+--result: 206
+
+
+-- # for each category
+select Caname, count(*)
+from vehicle
+group by(Caname);
+
+
+
+-- # for each transmission
+select Trname, count(*)
+from vehicle
+group by(Trname);
+
+
+-- # for each engine_displacement
+select Enname, count(*)
+from vehicle
+group by(Enname)
+order by(Enname);
+
+--------------------------------------------
+--MAKER CONSTRAINT CHECK-----
+--------------------------------------------
+
+--# National Maker
+select count(*)
+from maker
+where National_no='1';
+
+--result: 4
+
+--# inter-national Maker
+select count(*)
+from maker
+where National_no='2';
+
+--result: 4
+
+--total # Maker
+select count(*)
+from maker;
+
+--result: 8
+
+
+--------------------------------------------
+--MODEL CONSTRAINT CHECK-----
+--------------------------------------------
+
+--# model of each maker
+select Maname, count(Moname)
+from model
+group by(Maname);
+
+--total # of model
+select count(*)
+from model;
+
+--result: 31
+
+----------------------------------------------------
+--DETAILED_MODEL CONSTRAINT CHECK-----
+---------------------------------------------------
+
+--# model of each maker
+select Moname, count(dename)
+from detailed_model
+group by(Moname);
+
+--total # of detailed_model
+select count(*)
+from detailed_model;
+
+--result: 112
+
+----------------------------------------------------
+--CATEGORY CONSTRAINT CHECK-----
+---------------------------------------------------
+
+--total # of category
+select count(*)
+from category;
+
+--result: 5
+
+
+
+----------------------------------------------------
+--FUEL_TYPE CONSTRAINT CHECK-----
+---------------------------------------------------
+
+--total # of fuel_type
+select count(*)
+from fuel_type;
+
+--result: 5
+
+
+
+----------------------------------------------------
+--TRANSMSSION CONSTRAINT CHECK-----
+---------------------------------------------------
+
+--total # of transmission
+select count(*)
+from transmission;
+
+--result: 3
+
+
+-----------------------------------------------------------
+--ENGINE_DISPLACEMENT CONSTRAINT CHECK-----
+---------------------------------------------------------
+
+--total # of engine_displacement
+select count(*)
+from engine_displacement;
+
+--result: 5
+
+
+----------------------------------------------------
+--COLOR_TYPE CONSTRAINT CHECK--------
+---------------------------------------------------
+
+--total # of color_type
+select count(*)
+from color_type;
+
+--result: 8
+
+
+
+--------------------------------------------
+--ACCOUNT CONSTRAINT CHECK-----
+--------------------------------------------
+
+--Basic Information
+select count(*)
+from account 
+where 
+Birth_date is null and 
+Gender is null and 
+Email is null and 
+Address is null and 
+Occupation is null;
+
+--result : 24
+
+--Plus birth_date and gender
+select count(*)
+from account 
+where 
+Birth_date is not null and 
+Gender is not null and 
+Email is null and 
+Address is null and 
+Occupation is null;
+
+--result : 61
+
+--Full Information
+select count(*)
+from account 
+where 
+Birth_date is not null and 
+Gender is not null and 
+Email is not null and 
+Address is not null and 
+Occupation is not null;
+
+--result : 90
+
+--Male
+select count(*)
+from account 
+where Gender='M';
+
+--result: 74
+
+--Female
+select count(*)
+from account 
+where Gender='F';
+
+--result: 79
+
+
+-- customer who not buy
+select count(*)
+from customer
+where customer.Cuid not in(
+select orders.Cuid
+from orders);
+
+--result: 59
+
+-- customer who buy only 1
+select count(*)
+from (
+select count(*) 
+from orders
+group by(orders.Cuid)
+having count(*) = 1
+);
+
+--result: 34
+
+
+-- customer who buy more than 1
+select count(*)
+from (
+select count(*) 
+from orders
+group by(orders.Cuid)
+having count(*) > 1
+);
+
+-- result: 107
+
+-- # of administrator
+select count(*)
+from administrator;
+
+
+-- total # of account
+select count(*)
+from account;
+
+--result: 192
+
+--------------------------------------------
+-- ORDERS CONSTRAINT CHECK-----
+--------------------------------------------
+
+-- # of orders for each month(2017/10 ~ 2019/10)
+select Sold_date, count(*)
+from orders
+group by(Sold_date)
+order by(Sold_date);
+
+-- total # of orders
+select count(*)
+from orders;
+
+--result: 357
+
+
+
+
+
+
+
+
+
+

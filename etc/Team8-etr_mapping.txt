@@ -1,0 +1,39 @@
+<ER 다이어그램 변경>
+
+1. 기존 ERD에서의 Posting List, Detailed Posting을 삭제하고 순수 차량 정보를 매물 정보로 변경하여 Posting 관련 릴레이션을 대체. 
+
+2. Detailed Model에 포함되어 있던 Fuel, Transmission, Engine displacement, Color Relation들을 Vehicle 릴레이션에 붙임. 
+
+3. Vehicle 릴레이션의 다중 값이었던 Vehicle Id도 단일 값으로 변경하고, Option Id와 Region 속성 제거. 
+
+4. Vehicle에 대한 거래 내역인 Orders Relation을 추가하였고, Customer와 Dealer가 이를 통해 거래 내역에 대해서 참조할 수 있다. 
+
+5. Account의 관리자 Relation을 추가하였고 Vehicle에 대한 관리(허위 매물 등)를 할 수 있다. 
+
+6. Relation 측면에서 선택적 참여 관계인 것을 고려하여 전체 참여로 변경.
+
+7. 한 차량의 다수의 색상과 하이브리드 연료 지원을 위해 vehicle 릴레이션과 Fuel, Color 릴레이션 간의 Cardinality를 N:M으로 수정했고,
+Fuel->Fuel_type, Color->Color_type으로 이름을 바꾸고 그에 따른 Relation Type의 생성(Fueled, Colored)이 생김
+
+
+<Mapping>
+
+1. Account는 계정에 필요한 정보를 받고 Account Type이라는 속성에 의해 Admin, 
+Dealer, Customer Relation으로 나뉘어 진다. 이때 각 Relation은 Account의 Id를 참조
+한다. 
+
+2. Dealer는 자신의 차량 정보를 Vehicle Relation으로 표현하고 판매한다. 
+
+3. Vehicle Relation은 Maker, Transmission, Engine displacement을 참조한다. 
+
+4. Vehicle Relation과 Color와 Fuel은 N:M 관계로 이 둘 사이를 참조해주는 relation_type 개체를 각자 생성했다.
+
+5. Customer Relation은 Dealer가 올린 Vehicle 매물을 구매할 수 있고 구매하면 구매이
+력인 Orders를 볼 수 있다. 
+
+6. Admin Relation은 Dealer의 Vehicle 모델을 관리할 수 있다. 
+
+7. Model은 Maker Relation을 참조하고 Detailed Model을 참조한다.  
+
+
+ 
