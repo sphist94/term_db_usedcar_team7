@@ -1,7 +1,3 @@
-# IMPLEMENTATION FOR TRADING OF USED CAR
-##                                       Team7
-##                                       sphist94
-##                                       
-##                                       
+# IMPLEMENTATION FOR TRADING OF USED CAR              
 Term project of DB lecture in Kyoungpook National University, Daegu, Republic of Korea.
 
