@@ -1,16 +1,9 @@
 abstract public class AccountView extends View {
 
 	abstract protected boolean loadAccountPage();
-	abstract protected void loadHistoryLookupPage();
 
 	protected boolean signOut() {
 		return false;
-	}
-
-	protected boolean loadVehicleSearchPage() {
-		VehicleView vv = new VehicleView();
-		vv.loadVehicleSearchPage();
-		return true;
 	}
 
 	protected boolean loadAccountInformationPage() {
@@ -57,7 +50,7 @@ abstract public class AccountView extends View {
 		printPageStart();
 		System.out.println("현재 페이지는 회원정보 수정 페이지입니다.");
 		System.out.println("수정을 원하지 않을 시 \'-\'를 입력해주십시오.");
-		
+
 		System.out.print("Lname: ");
 		String last_name = sc.next();
 		System.out.print("Fname: ");
@@ -75,7 +68,7 @@ abstract public class AccountView extends View {
 		String address = sc.nextLine();
 		System.out.print("Occupation: ");
 		String occupation = sc.nextLine();
-		
+
 		System.out.println("\n회원정보 수정을 완료하시겠습니까?");
 		System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 		System.out.println("1.예   2.아니오");
@@ -121,5 +114,17 @@ abstract public class AccountView extends View {
 			// TODO:
 			// 1. DB와 연동하여 회원탈퇴 하는 기능
 		}
+	}
+	
+	protected boolean loadVehicleSearchPage() {
+		VehicleView vv = new VehicleView();
+		vv.loadVehicleSearchPage();
+		return true;
+	}
+
+	protected void loadHistoryLookupPage() {
+		HistoryView hv = new HistoryView();
+		hv.loadHistoriesPage();
+
 	}
 }

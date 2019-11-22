@@ -27,61 +27,51 @@ public class DealerView extends AccountView {
 		return true;
 	}
 	
-	protected void loadHistoryLookupPage() {
-		printPageStart();
-		System.out.println("현재 페이지는 판매이력 조회 페이지입니다.");
-		System.out.println("");
-		System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
-		System.out.println("정말로 회원탈퇴를 하시겠습니까?");
-		System.out.println("1.예   2.아니오");
-		int selection = sc.nextInt();
-	}
-	
 	private void loadVehicleRegistrationPage() {
 		printPageStart();
-		System.out.println("회원가입 페이지입니다. 뒤로 가시려면 999번을 입력해주십시오.");
-		System.out.println("가입하시고자 하는 유형을 입력해주십시오.");
-		System.out.println("1. 구매자   2. 판매자 ");
-		int account_type = sc.nextInt();
-//		if(account_type == 999)
-//			return false;
-		System.out.println("해당하는 사항에 알맞게 기입해주십시오. (*는 필수 정보)");
-		System.out.print("*ID: ");
-		String id = sc.next();
-		System.out.print("*PW: ");
-		String pw = sc.next();
-		System.out.print("*Lname: ");
-		String last_name = sc.next();
-		System.out.print("*Fname: ");
-		String first_name = sc.next();
-		System.out.print("*Phone(NNN-NNNN-NNNN): ");
-		String phone = sc.next();
+		System.out.println("차량등록 페이지입니다.");
+		System.out.println("해당하는 사항에 알맞게 기입해주십시오.");
+		System.out.print("차량번호: ");
+		String vehicle_number = sc.next();
+		System.out.print("주행거리: ");
+		int mileage = sc.nextInt();
+		System.out.print("연식: ");
+		String age = sc.next();
+		System.out.print("가격: ");
+		String price = sc.next();
+		System.out.print("제조사: ");
+		String maker = sc.next();
+		System.out.print("모델: ");
+		String model = sc.next();
+		System.out.print("세부모델: ");
+		String detailed_model = sc.next();
+		System.out.print("차종: ");
+		String category = sc.next();
+		System.out.print("배기량: ");
+		String engine = sc.next();
+		System.out.println("변속기(여러 변속기를 가지고 있으면 콤마(,)로 구분하여 입력해주십시오.): ");
+		String transmission = sc.next();
+		System.out.println("색상(여러가지 색상을 가지고 있으면 콤마(,)로 구분하여 입력해주십시오.): ");
+		String color = sc.next();
+		System.out.println("연료(하이브리드 연료이면 콤마(,)로 구분하여 입력해주십시오.): ");
+		String fuel = sc.next();
 		
 		printPageMiddle();
-		System.out.println("필수 정보는 전부 입력하셨습니다. 추가 정보를 입력하시겠습니까?");
-		System.out.println("1.예  2. 아니오");
+		System.out.println("차량정보 기입을 완료하시겠습니까?");
+		System.out.println("1.완료  2.뒤로가기");
 		int selection = sc.nextInt();
-//		if(selection != 1) {
-//			printPageEnd();
-//			return true;
-//		}
 		printPageMiddle();
-		
-		System.out.print("Gender: (M/F) ");
-		String gender = sc.next();
-		System.out.print("Birthdate(YYYY-MM-DD): ");
-		String birthdate = sc.next();
-		System.out.print("Email: ");
-		String email = sc.next();
-		
-		//버퍼비우기
-		sc.nextLine();
-		
-		System.out.print("Address: ");
-		String address = sc.nextLine();
-		System.out.print("Occupation: ");
-		String occupation = sc.nextLine();
 		printPageEnd();
+		
+		switch(selection) {
+		case 1:
+			// TODO: 
+			// 1. 해당 정보를 가지고 차량정보를 적절하게 입력했는지 비교
+			// 2. 다중 변속기, 색상, 연료일 시 적절히 DB에 넣을 것
+			break;
+		case 2:
+			break;
+		}
 	}
 	
 	

@@ -24,16 +24,5 @@ public class CustomerView extends AccountView {
 		}
 		return true;
 	}
-	
-	protected void loadHistoryLookupPage() {
-		printPageStart();
-		System.out.println("현재 페이지는 구매이력 조회 페이지입니다.");
-		System.out.println("");
-		System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
-		System.out.println("정말로 회원탈퇴를 하시겠습니까?");
-		System.out.println("1.예   2.아니오");
-		int selection = sc.nextInt();
-	}
-	
-	
+
 }
