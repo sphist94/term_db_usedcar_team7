@@ -1,6 +1,17 @@
 package Functions;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class CheckConditions {
+	static private Scanner sc = new Scanner(System.in);
+	static private Pattern pattern;
+	static private Matcher matcher;
+
 	public static boolean isNumber(String input) {
 		try {
 			Double.parseDouble(input);
@@ -11,62 +22,133 @@ public class CheckConditions {
 	}
 
 	public static boolean isInteger(String input) {
-		boolean ret = false;
 		if (isNumber(input)) {
-			ret = true;
-			for (int i = 0; i < input.length(); ++i) {
-				char chr = input.charAt(i);
-				if (chr < '0' || chr > '9') {
-					ret = false;
-				}
-			}
+			Pattern IntegerPattern = Pattern.compile("[0-9]*");
+			Matcher IntegerMatcher = IntegerPattern.matcher(input);
+			return IntegerMatcher.find();
 		}
-		return ret;
+		return false;
 	}
-	
-	public static boolean checkInputType(String input, String inputType) {
-		switch(inputType) {
-		
+
+	public static boolean checkInputType(String input, SignInputType inputType) {
+		switch (inputType) {
+		case ACCOUNT_TYPE:
+			return isAccountType(input);
+		case ID:
+			return isId(input);
+		case PW:
+			return isPassword(input);
+		case LNAME:
+			return isLname(input);
+		case FNAME:
+			return isFname(input);
+		case PHONE:
+			return isPhoneNumber(input);
+		case GENDER:
+			return isGender(input);
+		case BIRTHDATE:
+			return isBirthdate(input);
+		case EMAIL:
+			return isEmail(input);
+		case ADDRESS:
+			return isAddress(input);
+		case OCCUPATION:
+			return isOccupation(input);
 		}
-		return true;
-	}
-
-	public static boolean isId(String input) {
-		boolean ret = false;
-
-		return ret;
-	}
-
-	public static boolean isGender(String input) {
-		boolean ret = false;
-		if (input.equals("M") || input.equals("F") || input.equals("-"))
-			ret = true;
-		return ret;
+		return false;
 	}
 
 	public static boolean isAccountType(String input) {
-		boolean ret = false;
-		if (input.equals("1") || input.equals("2"))
-			ret = true;
-		return ret;
+		pattern = Pattern.compile("[12]");
+		matcher = pattern.matcher(input);
+		return matcher.find();
+	}
+
+	public static boolean isId(String input) {
+		pattern = Pattern.compile("[0-9a-zA-Z]+");
+		matcher = pattern.matcher(input);
+		return matcher.find();
+	}
+
+	public static boolean isPassword(String input) {
+		pattern = Pattern.compile("[0-9a-zA-Z`~!@#$%^&*()]+");
+		matcher = pattern.matcher(input);
+		return matcher.find();
+	}
+
+	public static boolean isLname(String input) {
+		pattern = Pattern.compile("[a-zA-Z]+");
+		matcher = pattern.matcher(input);
+		return matcher.find();
+	}
+
+	public static boolean isFname(String input) {
+		pattern = Pattern.compile("[a-zA-Z]+");
+		matcher = pattern.matcher(input);
+		return matcher.find();
 	}
 
 	public static boolean isPhoneNumber(String input) {
-		boolean ret = true;
-		if(input.length() != 13)
+		pattern = Pattern.compile("[0-9]{3}-[0-9]{4}-[0-9]{4}");
+		matcher = pattern.matcher(input);
+		return matcher.find();
+	}
+
+	public static boolean isGender(String input) {
+		if(input.equals("-")) 
+			return true;
+		
+		pattern = Pattern.compile("[MF]");
+		matcher = pattern.matcher(input);
+		return matcher.find();
+	}
+
+	public static boolean isValidateDate(String input) {
+		DateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dataFormat.setLenient(false);
+		try {
+			dataFormat.parse(input);
+			return true;
+		} catch (ParseException e) {
 			return false;
-		else {
-			if(!isInteger(input.substring(0, 2)))
-				return false;
-			if(!isInteger(input.substring(4, 7)))
-				return false;
-			if(!isInteger(input.substring(9, 12)))
-				return false;
-			if(input.charAt(3) != '-')
-				return false;
-			if(input.charAt(3) != '-')
-				return false;
 		}
-		return ret;
+	}
+
+	public static boolean isBirthdate(String input) {
+		if(input.equals("-")) 
+			return true;
+		
+		pattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+		matcher = pattern.matcher(input);
+		if (matcher.find())
+			return isValidateDate(input);
+		return false;
+	}
+	
+	public static boolean isEmail(String input) {
+		if(input.equals("-")) 
+			return true;
+		
+		pattern = Pattern.compile("[0-9a-zA-Z]+@[0-9a-zA-Z]+.[0-9a-zA-Z]+");
+		matcher = pattern.matcher(input);
+		return matcher.find();
+	}
+	
+	public static boolean isAddress(String input) {
+		if(input.equals("-")) 
+			return true;
+		
+		pattern = Pattern.compile("[0-9, a-zA-Z]*");
+		matcher = pattern.matcher(input);
+		return matcher.find();
+	}
+	
+	public static boolean isOccupation(String input) {
+		if(input.equals("-")) 
+			return true;
+		
+		pattern = Pattern.compile("[a-zA-Z]*");
+		matcher = pattern.matcher(input);
+		return matcher.find();
 	}
 }

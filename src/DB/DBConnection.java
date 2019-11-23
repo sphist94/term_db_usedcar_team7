@@ -17,7 +17,6 @@ public class DBConnection {
 	public static void getConnection() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			System.out.println("Success!");
 		}catch(ClassNotFoundException e) {
 			System.err.println("error = "+e.getMessage());
 			System.exit(1);

@@ -1,10 +1,6 @@
 package View;
 
-import java.io.Console;
-import java.io.IOException;
-
-import Functions.CheckConditions;
-import Functions.Utilities;
+import Functions.SignInputType;
 
 public class SignView extends BasicView {
 	public void loadSignIn() {
@@ -19,10 +15,8 @@ public class SignView extends BasicView {
 			if (printBack())
 				break;
 
-			System.out.print("ID: ");
-			String id = sc.nextLine();
-			System.out.print("PW: ");
-			String password = sc.nextLine();
+			String id = getInput(SignInputType.ID, "ID: ");
+			String password = getInput(SignInputType.PW, "PW: ");
 			printPageEnd();
 
 			// TODO:
@@ -59,63 +53,24 @@ public class SignView extends BasicView {
 		while (true) {
 			printPageStart();
 			System.out.println("회원가입 페이지입니다.");
-			System.out.println("가입하시고자 하는 유형을 입력해주십시오.");
-
+			
 			if (printBack())
 				break;
-
-			System.out.println("1. 구매자   2. 판매자 ");
-			String account_type;
-			while (true) {
-				account_type = sc.nextLine();
-				if(CheckConditions.isAccountType(account_type))
-					break;
-				else {
-					System.out.println("적절하지 않은 값입니다. 다시 입력해주십시오.");
-				}
-			}
 			
+			System.out.println("가입하시고자 하는 유형을 입력해주십시오.");
+			String account_type = getInput(SignInputType.ACCOUNT_TYPE, "1. 구매자   2. 판매자 ");
 			System.out.println("해당하는 사항에 알맞게 기입해주십시오. (*는 필수 정보)");
-			System.out.println("입력하지 않을 시 \'-\'를 입력해주십시오.");
-			System.out.print("*ID: ");
-			String id = sc.nextLine();
-			System.out.print("*PW: ");
-			String pw = sc.nextLine();
-			System.out.print("*Lname: ");
-			String last_name = sc.nextLine();
-			System.out.print("*Fname: ");
-			String first_name = sc.nextLine();
-			
-			
-			System.out.print("*Phone(NNN-NNNN-NNNN): ");
-			String phone;
-			while (true) {
-				phone = sc.nextLine();
-				if(CheckConditions.isPhoneNumber(account_type))
-					break;
-				else {
-					System.out.println("적절하지 않은 값입니다. 다시 입력해주십시오.");
-				}
-			}
-
-			System.out.print("Birthdate(YYYY-MM-DD): ");
-			String birthdate = sc.nextLine();
-			System.out.print("Gender: (M/F) ");
-			String gender;
-			while (true) {
-				gender = sc.nextLine();
-				if(CheckConditions.isGender(account_type))
-					break;
-				else {
-					System.out.println("적절하지 않은 값입니다. 다시 입력해주십시오.");
-				}
-			}
-			System.out.print("Email: ");
-			String email = sc.nextLine();
-			System.out.print("Address: ");
-			String address = sc.nextLine();
-			System.out.print("Occupation: ");
-			String occupation = sc.nextLine();
+			System.out.println("입력하지 않을 시 - 키를 입력해주십시오.");
+			String id = getInput(SignInputType.ID, "*ID: ");
+			String pw = getInput(SignInputType.PW, "*PW: ");
+			String last_name = getInput(SignInputType.LNAME, "*Lname: ");
+			String first_name = getInput(SignInputType.FNAME, "*Fname: ");
+			String phone = getInput(SignInputType.PHONE, "*Phone(NNN-NNNN-NNNN): ");
+			String birthdate = getInput(SignInputType.BIRTHDATE, "Birthdate(YYYY-MM-DD): ");
+			String gender = getInput(SignInputType.GENDER, "Gender: (M/F) ");
+			String email = getInput(SignInputType.EMAIL, "Email: ");
+			String address = getInput(SignInputType.ADDRESS, "Address: ");
+			String occupation = getInput(SignInputType.OCCUPATION, "Occupation: ");
 			printPageEnd();
 
 			// TODO:

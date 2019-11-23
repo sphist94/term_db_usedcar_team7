@@ -1,10 +1,11 @@
 package View;
 
 import java.util.Scanner;
+import Functions.SignInputType;
 import Functions.CheckConditions;
 
 public class BasicView {
-	Scanner sc = new Scanner(System.in);
+	static Scanner sc = new Scanner(System.in);
 
 	public void printPageStart() {
 		// System.out.println("PAGE START=================================");
@@ -36,5 +37,18 @@ public class BasicView {
 		//그 이외 값이면 return false
 		printPageEnd();
 		return false;
+	}
+	
+	public String getInput(SignInputType type, String msg) {
+		String str = "";
+		while(true) {
+			System.out.print(msg);
+			str = sc.nextLine();
+			if(CheckConditions.checkInputType(str, type))
+				break;
+			System.out.println("잘못된 값을 입력했거나, 반드시 입력해야하는 항목입니다.");
+			System.out.println("다시 입력해주십시오.");
+		}
+		return str;
 	}
 }
