@@ -24,7 +24,10 @@ public class CheckConditions {
 		return ret;
 	}
 	
-	public static boolean checkInputType(String input) {
+	public static boolean checkInputType(String input, String inputType) {
+		switch(inputType) {
+		
+		}
 		return true;
 	}
 
