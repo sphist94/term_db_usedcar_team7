@@ -1,23 +1,20 @@
-package jdbc;
+package DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class dbConnect {
-	public static final String URL="jdbc:oracle:thin:@localhost:1521:orcl";
-	public static final String USER="hr";
-	public static final String PASSWD="hr";
+public class DBConnection {
+	public static final String URL="jdbc:oracle:thin:@localhost:1600:xe";
+	public static final String USER="system";
+	public static final String PASSWD="oracle";
 	
 	public static Connection conn=null;
 	public static Statement stmt=null;
 	public static String sql="";
 	
-	public void getConnection() {
-		// TODO Auto-generated method stub
-		
-		
+	public static void getConnection() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			System.out.println("Success!");

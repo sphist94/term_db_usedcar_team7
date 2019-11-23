@@ -1,10 +1,12 @@
 package View;
 
-public class SignView extends BasicView {
-//	public enum AccountType{
-//		CUSTOMER, DEALER, ADMINISTRATOR
-//	};
+import java.io.Console;
+import java.io.IOException;
 
+import Functions.CheckConditions;
+import Functions.Utilities;
+
+public class SignView extends BasicView {
 	public void loadSignIn() {
 		boolean isSignInSuccess = false;
 
@@ -18,9 +20,9 @@ public class SignView extends BasicView {
 				break;
 
 			System.out.print("ID: ");
-			String id = sc.next();
+			String id = sc.nextLine();
 			System.out.print("PW: ");
-			String pw = sc.next();
+			String password = sc.nextLine();
 			printPageEnd();
 
 			// TODO:
@@ -63,41 +65,53 @@ public class SignView extends BasicView {
 				break;
 
 			System.out.println("1. 구매자   2. 판매자 ");
-			int account_type = sc.nextInt();
+			String account_type;
+			while (true) {
+				account_type = sc.nextLine();
+				if(CheckConditions.isAccountType(account_type))
+					break;
+				else {
+					System.out.println("적절하지 않은 값입니다. 다시 입력해주십시오.");
+				}
+			}
+			
 			System.out.println("해당하는 사항에 알맞게 기입해주십시오. (*는 필수 정보)");
+			System.out.println("입력하지 않을 시 \'-\'를 입력해주십시오.");
 			System.out.print("*ID: ");
-			String id = sc.next();
+			String id = sc.nextLine();
 			System.out.print("*PW: ");
-			String pw = sc.next();
+			String pw = sc.nextLine();
 			System.out.print("*Lname: ");
-			String last_name = sc.next();
+			String last_name = sc.nextLine();
 			System.out.print("*Fname: ");
-			String first_name = sc.next();
+			String first_name = sc.nextLine();
+			
+			
 			System.out.print("*Phone(NNN-NNNN-NNNN): ");
-			String phone = sc.next();
-
-			printPageMiddle();
-			System.out.println("필수 정보는 전부 입력하셨습니다. 추가 정보를 입력하시겠습니까?");
-			System.out.println("1.예  2. 아니오");
-
-			int selection = sc.nextInt();
-			if (selection != 1) {
-				printPageEnd();
-				break;
+			String phone;
+			while (true) {
+				phone = sc.nextLine();
+				if(CheckConditions.isPhoneNumber(account_type))
+					break;
+				else {
+					System.out.println("적절하지 않은 값입니다. 다시 입력해주십시오.");
+				}
 			}
 
-			printPageMiddle();
-
-			System.out.print("Gender: (M/F) ");
-			String gender = sc.next();
 			System.out.print("Birthdate(YYYY-MM-DD): ");
-			String birthdate = sc.next();
+			String birthdate = sc.nextLine();
+			System.out.print("Gender: (M/F) ");
+			String gender;
+			while (true) {
+				gender = sc.nextLine();
+				if(CheckConditions.isGender(account_type))
+					break;
+				else {
+					System.out.println("적절하지 않은 값입니다. 다시 입력해주십시오.");
+				}
+			}
 			System.out.print("Email: ");
-			String email = sc.next();
-
-			// 버퍼비우기
-			sc.nextLine();
-
+			String email = sc.nextLine();
 			System.out.print("Address: ");
 			String address = sc.nextLine();
 			System.out.print("Occupation: ");
