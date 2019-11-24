@@ -3,12 +3,10 @@ package Functions;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CheckConditions {
-	static private Scanner sc = new Scanner(System.in);
 	static private Pattern pattern;
 	static private Matcher matcher;
 
