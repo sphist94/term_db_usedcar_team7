@@ -31,6 +31,9 @@ public class AccountInfoDB {
 		}
 	}
 
+	//TODO:
+	//DB에서 삭제시 무결성 제약조건을 어김
+	//그에대한 해결이 필요
 	public static boolean WidthDrawal(String id) {
 		try {
 			DBConnection.stmt = DBConnection.conn.createStatement();
