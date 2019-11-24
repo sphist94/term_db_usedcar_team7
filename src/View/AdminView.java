@@ -1,6 +1,6 @@
 package View;
 public class AdminView extends AccountView {
-	protected boolean loadAccountPage() {
+	protected boolean loadAccountPage(String id) {
 		boolean state = true;
 		while (state) {
 			printPageStart();
@@ -12,7 +12,7 @@ public class AdminView extends AccountView {
 
 			switch (selection) {
 			case 1:
-				loadAccountInformationPage();
+				loadAccountInformationPage(id);
 				break;
 			case 2:
 				loadVehicleSearchPage();
