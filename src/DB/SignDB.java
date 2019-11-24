@@ -16,7 +16,7 @@ public class SignDB {
 				return true;
 			return false;
 		} catch (SQLException ex) {
-			System.err.println("SQL error = " + ex.getMessage());
+			System.err.println(ex.getMessage());
 			return false;
 		}
 	}
@@ -31,12 +31,12 @@ public class SignDB {
 				return Integer.parseInt(rs.getString(3));
 			return 0;
 		} catch (SQLException ex2) {
-			System.err.println("sql error = " + ex2.getMessage());
+			System.err.println(ex2.getMessage());
 			return 0;
 		}
 	}
 
-	public static void signUp(String[] input, String account_type) {
+	public static boolean signUp(String[] input, String account_type) {
 		try {
 			DBConnection.stmt = DBConnection.conn.createStatement();
 			StringBuffer sb = new StringBuffer();
@@ -55,24 +55,25 @@ public class SignDB {
 			switch(Integer.parseInt(account_type)) {
 			case 1:
 				sb = new StringBuffer();
-				sb.append("insert into customer(Cuid) values ("+input[0]+")");
+				sb.append("insert into customer(Cuid) values ('"+input[0]+"')");
 				DBConnection.stmt.executeUpdate(sb.toString());
 				break;
 			case 2:
 				sb = new StringBuffer();
-				sb.append("insert into dealer(Cuid) values ("+input[0]+")");
+				sb.append("insert into dealer(Cuid) values ('"+input[0]+"')");
 				DBConnection.stmt.executeUpdate(sb.toString());
 				break;
 			case 3:
 				sb = new StringBuffer();
-				sb.append("insert into administrator(Cuid) values ("+input[0]+")");
+				sb.append("insert into administrator(Cuid) values ('"+input[0]+"')");
 				DBConnection.stmt.executeUpdate(sb.toString());
 				break;
 			}
+			return true;
 			
 		} catch (SQLException ex2) {
-			System.err.println("sql error = " + ex2.getMessage());
-			System.exit(1);
+			System.err.println(ex2.getMessage());
+			return false;
 		}
 	}
 }
