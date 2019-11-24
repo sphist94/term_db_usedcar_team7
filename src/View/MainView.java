@@ -19,7 +19,6 @@ public class MainView {
 			// 입력값이 정수값이 아닐 경우 프로그램 다시 시작
 			if (!CheckConditions.isInteger(selection))
 				continue;
-
 			view.printPageEnd();
 
 			SignView sv = new SignView();

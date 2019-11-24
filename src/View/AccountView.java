@@ -3,7 +3,7 @@ package View;
 import java.util.Arrays;
 
 import DB.AccountInfoDB;
-import DB.SignDB;
+
 import Functions.CheckConditions;
 import Functions.SignInputType;
 
@@ -15,7 +15,8 @@ abstract public class AccountView extends BasicView {
 		return false;
 	}
 
-	protected void loadAccountInformationPage(String id) {
+	protected boolean loadAccountInformationPage(String id) {
+		boolean doesWithdrawal = false;
 		while (true) {
 			printPageStart();
 			System.out.println("현재 페이지는 회원정보 관련 페이지입니다.");
@@ -38,22 +39,31 @@ abstract public class AccountView extends BasicView {
 				loadHistoryLookupPage();
 				break;
 			case 4:
-				loadWithdrawalPage(id);
+				doesWithdrawal = loadWithdrawalPage(id);
 				break;
 			}
+			
+			if(doesWithdrawal) {
+				return false;
+			}
 		}
+		return true;
 	}
 
 	protected boolean loadCheckingByPassword(String id) {
+		printPageStart();
 		int cnt = 0;
-		while (cnt > 3) {
-			printPageStart();
+		while (cnt < 3) {
+			printPageMiddle();
 			System.out.println("본인확인을 위해 비밀번호를 입력해주십시오.");
+			// 버퍼 비우기
+			sc.nextLine();
 			String password = getInput(SignInputType.PW, "비밀번호: ");
-			printPageEnd();
 
 			if (AccountInfoDB.isEuqalPassword(id, password)) {
 				System.out.println("본인확인이 완료되었습니다.");
+				printPageMiddle();
+				printPageEnd();
 				return true;
 			}
 
@@ -63,6 +73,7 @@ abstract public class AccountView extends BasicView {
 
 		System.out.println("비밀번호를 3번 이상 틀렸습니다.");
 		System.out.println("잠시 후에 다시 시도해주십시오.");
+		printPageEnd();
 		return false;
 	}
 
@@ -90,10 +101,9 @@ abstract public class AccountView extends BasicView {
 	}
 
 	protected void loadAccountInfoResetPage(String id) {
-		if (loadCheckingByPassword(id)) {
+		if (!loadCheckingByPassword(id)) {
 			return;
 		}
-		
 
 		String[] input = new String[8];
 		Arrays.fill(input, "");
@@ -103,7 +113,7 @@ abstract public class AccountView extends BasicView {
 			System.out.println("입력하고자 하는 사항을 선택해주십시오.");
 			System.out.println("1.이름(성 제외)*  2.성  3.휴대전화 번호  4.생년월일  5.성별  6.이메일  7.주소  8.직업");
 			System.out.println("해당하는 사항에 알맞게 기입해주십시오.");
-			System.out.println("완료를 원하시면 9를, 종료를 원하시면 10를 입력해주세요");
+			System.out.println("완료를 원하시면 9, 종료를 원하시면 10를 입력해주세요");
 			System.out.println("그 외의 숫자나 문자는 무시됩니다.");
 			printPageEnd();
 
@@ -126,46 +136,44 @@ abstract public class AccountView extends BasicView {
 					break;
 				}
 				input[select - 1] = FillAccountInfoRest(select);
-			}
-			else {
+			} else {
 				System.out.println("잘못된 값을 입력하셨습니다. 다시 입력해주십시오.");
 			}
 		}
-		
 	}
 
 	protected boolean loadPasswordResetPage(String id) {
-		if (loadCheckingByPassword(id)) {
+		if (!loadCheckingByPassword(id)) {
 			return false;
 		}
-
+		printPageStart();
 		while (true) {
 			if (printBack()) {
 				break;
 			}
-			printPageStart();
-			System.out.print("변경 비밀번호: ");
+			printPageMiddle();
 			String password1 = getInput(SignInputType.PW, "변경 비밀번호: ");
-			System.out.print("변경 비밀번호 확인: ");
 			String password2 = getInput(SignInputType.PW, "변경 비밀번호 확인: ");
-			printPageEnd();
 
 			if (password1.equals(password2) && AccountInfoDB.updatePassword(id, password1)) {
 				System.out.println("비밀번호 변경이 완료됐습니다.");
+				printPageMiddle();
 				return true;
 			} else {
 				System.out.println("확인 비밀번호가 일치하지 않습니다.");
 				System.out.println("다시 입력해주십시오.");
 			}
+			printPageMiddle();
 		}
-
+		printPageEnd();
 		return false;
 	}
 
-	protected void loadWithdrawalPage(String id) {
-		if (loadCheckingByPassword(id)) {
-			return;
+	protected boolean loadWithdrawalPage(String id) {
+		if (!loadCheckingByPassword(id)) {
+			return false;
 		}
+
 		printPageStart();
 		while (true) {
 			printPageMiddle();
@@ -182,16 +190,17 @@ abstract public class AccountView extends BasicView {
 				if (select == 1) {
 					AccountInfoDB.WidthDrawal(id);
 					System.out.println("회원탈퇴가 완료됐습니다. 그 동안 이용해주셔서 감사합니다.");
-					break;
-				} 
-				else if (select == 2) 
+					return true;
+				} else if (select == 2)
 					break;
 				else {
 					System.out.println("잘못된 값을 입력하셨습니다. 다시 입력해주십시오.");
 				}
 			}
 		}
+
 		printPageEnd();
+		return false;
 	}
 
 	protected boolean loadVehicleSearchPage() {

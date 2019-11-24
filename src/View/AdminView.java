@@ -12,7 +12,8 @@ public class AdminView extends AccountView {
 
 			switch (selection) {
 			case 1:
-				loadAccountInformationPage(id);
+				//È¸¿øÅ»ÅðµÇ¸é false¸¦ return ¹Þ¾Æ loop°¡ ²¨Áü
+				state = loadAccountInformationPage(id);
 				break;
 			case 2:
 				loadVehicleSearchPage();

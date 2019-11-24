@@ -29,13 +29,12 @@ public class BasicView {
 		String back = sc.nextLine();
 		printPageMiddle();
 
-		// 입력 값이 -1 값이면 return true
+		// 입력 값이 999값이면 return true
 		if (CheckConditions.isInteger(back) && Integer.parseInt(back) == back_int) {
 			return true;
 		}
 
 		// 그 이외 값이면 return false
-		printPageEnd();
 		return false;
 	}
 
@@ -43,6 +42,11 @@ public class BasicView {
 		String str = "";
 		while (true) {
 			System.out.print(msg);
+
+//			//버퍼에 \n이 존재하면 비움
+//			while(sc.hasNextLine())
+//				sc.nextLine();
+			
 			str = sc.nextLine();
 			if (CheckConditions.checkInputType(str, type)) 
 				break;

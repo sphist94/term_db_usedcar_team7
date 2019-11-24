@@ -21,7 +21,9 @@ public class CheckConditions {
 
 	public static boolean isInteger(String input) {
 		if (isNumber(input)) {
-			Pattern IntegerPattern = Pattern.compile("[0-9]*");
+			if (input.contains("."))
+				return false;
+			Pattern IntegerPattern = Pattern.compile("[0-9]+");
 			Matcher IntegerMatcher = IntegerPattern.matcher(input);
 			return IntegerMatcher.find();
 		}
@@ -93,9 +95,9 @@ public class CheckConditions {
 	}
 
 	public static boolean isGender(String input) {
-		if(input.equals("-")) 
+		if (input.equals("-"))
 			return true;
-		
+
 		pattern = Pattern.compile("[MF]");
 		matcher = pattern.matcher(input);
 		return matcher.find();
@@ -113,38 +115,38 @@ public class CheckConditions {
 	}
 
 	public static boolean isBirthdate(String input) {
-		if(input.equals("-")) 
+		if (input.equals("-"))
 			return true;
-		
+
 		pattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
 		matcher = pattern.matcher(input);
 		if (matcher.find())
 			return isValidateDate(input);
 		return false;
 	}
-	
+
 	public static boolean isEmail(String input) {
-		if(input.equals("-")) 
+		if (input.equals("-"))
 			return true;
-		
+
 		pattern = Pattern.compile("[0-9a-zA-Z]+@[0-9a-zA-Z]+.[0-9a-zA-Z]+");
 		matcher = pattern.matcher(input);
 		return matcher.find();
 	}
-	
+
 	public static boolean isAddress(String input) {
-		if(input.equals("-")) 
+		if (input.equals("-"))
 			return true;
-		
+
 		pattern = Pattern.compile("[0-9, a-zA-Z]*");
 		matcher = pattern.matcher(input);
 		return matcher.find();
 	}
-	
+
 	public static boolean isOccupation(String input) {
-		if(input.equals("-")) 
+		if (input.equals("-"))
 			return true;
-		
+
 		pattern = Pattern.compile("[a-zA-Z]*");
 		matcher = pattern.matcher(input);
 		return matcher.find();
