@@ -23,10 +23,9 @@ public class InsertionPhase2Sqls {
 
 	public static void readSqlFiles(String fileName) {
 		try {
-			//자신의 파일 넣고 싶으면 파일 경로 넣어야함
 			File file = new File(".");
 			final String path = file.getAbsolutePath().replace(".", "") + "sql\\";
-			System.out.println(path + fileName);
+			//System.out.println(path + fileName);
 			file = new File(path + fileName);
 			
 			FileReader fr = new FileReader(file);
