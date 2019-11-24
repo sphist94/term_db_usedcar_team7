@@ -29,5 +29,4 @@ public class DBConnection {
 			System.exit(1);
 		}
 	}
-
 }
