@@ -21,7 +21,6 @@ public class CustomerView extends AccountView {
 				state = signOut();
 				break;
 			}
-
 		}
 		return true;
 	}

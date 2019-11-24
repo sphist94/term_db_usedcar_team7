@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SignDB {
-	static ResultSet rs;
-
 	public static boolean DidExistId(String id) {
 		try {
 			DBConnection.stmt = DBConnection.conn.createStatement();

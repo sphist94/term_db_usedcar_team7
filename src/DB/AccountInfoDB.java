@@ -2,8 +2,24 @@ package DB;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import Functions.CheckConditions;
 
 public class AccountInfoDB {
+	public static int getAccountType(String id) {
+		try {
+			DBConnection.stmt = DBConnection.conn.createStatement();
+			String sql = "select Account_type from Account where Id = '" + id + "'";
+			ResultSet rs = DBConnection.stmt.executeQuery(sql);
+			if (rs.next() && CheckConditions.isInteger(rs.getString(1))) {
+				return Integer.parseInt(rs.getString(1));
+			}
+			return 0;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			return 0;
+		}
+	}
+	
 	public static boolean isEuqalPassword(String id, String password) {
 		try {
 			DBConnection.stmt = DBConnection.conn.createStatement();
@@ -65,5 +81,4 @@ public class AccountInfoDB {
 			return false;
 		}
 	}
-
 }

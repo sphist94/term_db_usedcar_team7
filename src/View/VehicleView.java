@@ -1,12 +1,15 @@
 package View;
 
+import DB.VehicleDB;
+
 public class VehicleView extends BasicView {
 	public void loadVehicleSearchPage() {
 		while (true) {
 			printPageStart();
 			System.out.println("현재 페이지는 매물검색 관련 페이지입니다.");
 
-			if (printBack()) break;
+			if (printBack())
+				break;
 
 			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 			System.out.println("1.전체 검색  2.조건 검색");
@@ -22,6 +25,19 @@ public class VehicleView extends BasicView {
 				break;
 			}
 		}
+	}
+
+	public void showVehicle(String poid) {
+		String[] info = VehicleDB.getVehicleInfoByPoid(poid);
+		printPageMiddle();
+		if (info == null) {
+			System.out.println("해당하는 매물은 존재하지 않는 매물입니다.");
+			System.out.println("다시 입력해주십시오.");
+		} else {
+			String[] meta_info = {"매물번호", "판매자", "연식", "차량번호", "주행거리","제조사", "모델", "세부모델", "배기량", "변속기", "차종", "색상", "연료"};
+			
+		}
+		printPageMiddle();
 	}
 
 	// full_maker: 제조사, 모델, 세부모델을 합친것
@@ -75,7 +91,8 @@ public class VehicleView extends BasicView {
 			System.out.println("매물 조건검색 페이지입니다.");
 			System.out.println("해당하는 사항에 알맞게 기입해주십시오.");
 
-			if (printBack()) break;
+			if (printBack())
+				break;
 
 			System.out.println("0 입력시 조건 없음");
 			System.out.print("차량번호: ");

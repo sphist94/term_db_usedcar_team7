@@ -36,7 +36,7 @@ abstract public class AccountView extends BasicView {
 				loadPasswordResetPage(id);
 				break;
 			case 3:
-				loadHistoryLookupPage();
+				loadHistoryLookupPage(id);
 				break;
 			case 4:
 				doesWithdrawal = loadWithdrawalPage(id);
@@ -111,8 +111,8 @@ abstract public class AccountView extends BasicView {
 			printPageStart();
 			System.out.println("현재 페이지는 회원정보 수정 페이지입니다.");
 			System.out.println("입력하고자 하는 사항을 선택해주십시오.");
-			System.out.println("1.이름(성 제외)*  2.성  3.휴대전화 번호  4.생년월일  5.성별  6.이메일  7.주소  8.직업");
 			System.out.println("해당하는 사항에 알맞게 기입해주십시오.");
+			System.out.println("1.이름(성 제외)*  2.성  3.휴대전화 번호  4.생년월일  5.성별  6.이메일  7.주소  8.직업");
 			System.out.println("완료를 원하시면 9, 종료를 원하시면 10를 입력해주세요");
 			System.out.println("그 외의 숫자나 문자는 무시됩니다.");
 			printPageEnd();
@@ -209,9 +209,9 @@ abstract public class AccountView extends BasicView {
 		return true;
 	}
 
-	protected void loadHistoryLookupPage() {
+	protected void loadHistoryLookupPage(String id) {
 		HistoryView hv = new HistoryView();
-		hv.loadHistoriesPage();
+		hv.loadHistoriesPage(id);
 
 	}
 }
