@@ -8,6 +8,8 @@ import java.util.Arrays;
 import DB.SignDB;
 
 public class SignView extends BasicView {
+	String id = "";
+	String password = "";
 	public void loadSignIn() {
 		boolean isSignInSuccess = false;
 		int account_type = 0;
@@ -20,8 +22,8 @@ public class SignView extends BasicView {
 			if (printBack())
 				break;
 
-			String id = getInput(SignInputType.ID, "ID: ");
-			String password = getInput(SignInputType.PW, "PW: ");
+			id = getInput(SignInputType.ID, "ID: ");
+			password = getInput(SignInputType.PW, "PW: ");
 			printPageEnd();
 
 			// SignDB.Login에 ID와 PW를 넘겨주면
@@ -42,15 +44,15 @@ public class SignView extends BasicView {
 			switch (account_type) {
 			case 1:
 				CustomerView cv = new CustomerView();
-				cv.loadAccountPage();
+				cv.loadAccountPage(id);
 				break;
 			case 2:
 				DealerView dv = new DealerView();
-				dv.loadAccountPage();
+				dv.loadAccountPage(id);
 				break;
 			case 3:
 				AdminView av = new AdminView();
-				av.loadAccountPage();
+				av.loadAccountPage(id);
 				break;
 			}
 		}
@@ -59,25 +61,25 @@ public class SignView extends BasicView {
 	private String FillSignUpInfo(int select) {
 		switch (select) {
 		case 1:
-			return getInput(SignInputType.ID, "*ID: ");
+			return getInput(SignInputType.ID, "*아이디: ");
 		case 2:
-			return getInput(SignInputType.PW, "*PW: ");
+			return getInput(SignInputType.PW, "*비밀번호: ");
 		case 3:
-			return getInput(SignInputType.LNAME, "*Lname: ");
+			return getInput(SignInputType.LNAME, "*이름: ");
 		case 4:
-			return getInput(SignInputType.FNAME, "*Fname: ");
+			return getInput(SignInputType.FNAME, "*성: ");
 		case 5:
-			return getInput(SignInputType.PHONE, "*Phone(NNN-NNNN-NNNN): ");
+			return getInput(SignInputType.PHONE, "*휴대전화 번호(NNN-NNNN-NNNN): ");
 		case 6:
-			return getInput(SignInputType.BIRTHDATE, "Birthdate(YYYY-MM-DD): ");
+			return getInput(SignInputType.BIRTHDATE, "생년월일(YYYY-MM-DD): ");
 		case 7:
-			return getInput(SignInputType.GENDER, "Gender: (M/F) ");
+			return getInput(SignInputType.GENDER, "성별(M/F): ");
 		case 8:
-			return getInput(SignInputType.EMAIL, "Email: ");
+			return getInput(SignInputType.EMAIL, "이메일: ");
 		case 9:
-			return getInput(SignInputType.ADDRESS, "Address: ");
+			return getInput(SignInputType.ADDRESS, "주소: ");
 		case 10:
-			return getInput(SignInputType.OCCUPATION, "Occupation: ");
+			return getInput(SignInputType.OCCUPATION, "직업: ");
 		default:
 			return "";
 		}
@@ -105,7 +107,7 @@ public class SignView extends BasicView {
 		while (true) {
 			printPageMiddle();
 			System.out.println("입력하고자 하는 사항을 선택해주십시오.");
-			System.out.println("1.아이디*  2.비밀번호*  3.성*  4.이름*  5.휴대전화 번호*  6.생년월일  7.성별  8.이메일  9.주소  10.직업");
+			System.out.println("1.아이디*  2.비밀번호*  3.이름(성 제외)*  4.성*  5.휴대전화 번호*  6.생년월일  7.성별  8.이메일  9.주소  10.직업");
 			System.out.println("해당하는 사항에 알맞게 기입해주십시오. (*는 필수 정보)");
 			System.out.println("완료를 원하시면 11를, 종료를 원하시면 12를 입력해주세요");
 			System.out.println("그 외의 숫자나 문자는 무시됩니다.");
@@ -123,13 +125,13 @@ public class SignView extends BasicView {
 					if (didFillRequiredInfo(input)) {
 						// DB를 업데이트 해준다
 						SignDB.signUp(input, account_type);
+						System.out.println("회원가입이 완료되었습니다.");
 						break;
 					}
 					// 필수정보를 전부 입력하지 않은 경우
 					else {
 						printPageMiddle();
 						System.out.println("아직 필수정보들을 전부 입력하지 않았습니다. 다시 확인해주세요.");
-						System.out.println("회원가입이 완료되었습니다.");
 						printPageMiddle();
 						continue;
 					}
