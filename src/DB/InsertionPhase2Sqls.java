@@ -23,9 +23,12 @@ public class InsertionPhase2Sqls {
 
 	public static void readSqlFiles(String fileName) {
 		try {
-			final String path = "C:\\Users\\sphis\\git\\term_db_usedcar_team7\\sql\\";
-			//System.out.println(path + fileName);
-			File file = new File(path + fileName);
+			//자신의 파일 넣고 싶으면 파일 경로 넣어야함
+			File file = new File(".");
+			final String path = file.getAbsolutePath().replace(".", "") + "sql\\";
+			System.out.println(path + fileName);
+			file = new File(path + fileName);
+			
 			FileReader fr = new FileReader(file);
 			BufferedReader br = new BufferedReader(fr);
 			String line;
@@ -46,10 +49,10 @@ public class InsertionPhase2Sqls {
 						sb.append(line.substring(0, line.length()-1));
 						String sql = sb.toString();
 						sb = new StringBuffer();
-						System.out.println(sql);
+						//System.out.println(sql);
 						DBConnection.stmt.executeUpdate(sql);
 					} catch (SQLException e) {
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				} else {
 					sb.append(line);
