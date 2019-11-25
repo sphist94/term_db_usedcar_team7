@@ -16,8 +16,8 @@ abstract public class AccountView extends BasicView {
 	}
 
 	protected boolean loadAccountInformationPage(String id) {
-		boolean doesWithdrawal = false;
-		while (true) {
+		boolean isExit = false;
+		while (!isExit) {
 			printPageStart();
 			System.out.println("현재 페이지는 회원정보 관련 페이지입니다.");
 			if (printBack())
@@ -33,18 +33,14 @@ abstract public class AccountView extends BasicView {
 				loadAccountInfoResetPage(id);
 				break;
 			case 2:
-				loadPasswordResetPage(id);
+				isExit = loadPasswordResetPage(id);
 				break;
 			case 3:
 				loadHistoryLookupPage(id);
 				break;
 			case 4:
-				doesWithdrawal = loadWithdrawalPage(id);
+				isExit = loadWithdrawalPage(id);
 				break;
-			}
-			
-			if(doesWithdrawal) {
-				return false;
 			}
 		}
 		return true;
@@ -123,12 +119,14 @@ abstract public class AccountView extends BasicView {
 				// select가 정수이지만 사항과 관련없는 정수일경우 다시 시작
 				if (select < 1 || select > 10) {
 					System.out.println("잘못된 값을 입력하셨습니다. 다시 입력해주십시오.");
+					printToBeContinue();
 					continue;
 				}
 				// 9 은 입력완료를 의미
 				else if (select == 9) {
 					AccountInfoDB.updateAccountInfo(id, input);
 					System.out.println("회원정보 수정이 완료되었습니다.");
+					printToBeContinue();
 					break;
 				}
 				// 10는 종료를 의미, 따라서 회원정보 수정 페이지 종료
@@ -138,6 +136,7 @@ abstract public class AccountView extends BasicView {
 				input[select - 1] = FillAccountInfoRest(select);
 			} else {
 				System.out.println("잘못된 값을 입력하셨습니다. 다시 입력해주십시오.");
+				printToBeContinue();
 			}
 		}
 	}
@@ -147,25 +146,23 @@ abstract public class AccountView extends BasicView {
 			return false;
 		}
 		printPageStart();
-		while (true) {
-			if (printBack()) {
-				break;
-			}
-			printPageMiddle();
+		int cnt = 0;
+		while (cnt < 3) {
 			String password1 = getInput(SignInputType.PW, "변경 비밀번호: ");
 			String password2 = getInput(SignInputType.PW, "변경 비밀번호 확인: ");
 
 			if (password1.equals(password2) && AccountInfoDB.updatePassword(id, password1)) {
 				System.out.println("비밀번호 변경이 완료됐습니다.");
-				printPageMiddle();
+				System.out.println("다시 로그인 해주십시오.");
+				printToBeContinue();
+				printPageEnd();
 				return true;
 			} else {
 				System.out.println("확인 비밀번호가 일치하지 않습니다.");
 				System.out.println("다시 입력해주십시오.");
 			}
-			printPageMiddle();
+			++cnt;
 		}
-		printPageEnd();
 		return false;
 	}
 
@@ -190,6 +187,7 @@ abstract public class AccountView extends BasicView {
 				if (select == 1) {
 					AccountInfoDB.WidthDrawal(id);
 					System.out.println("회원탈퇴가 완료됐습니다. 그 동안 이용해주셔서 감사합니다.");
+					printToBeContinue();
 					return true;
 				} else if (select == 2)
 					break;

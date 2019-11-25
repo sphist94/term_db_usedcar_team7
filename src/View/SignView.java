@@ -14,8 +14,8 @@ public class SignView extends BasicView {
 		boolean isSignInSuccess = false;
 		int account_type = 0;
 		// 로그인 실패시 계속해서 이 페이지에 머물면서 로그인을 시도
+		printPageStart();
 		while (!isSignInSuccess) {
-			printPageStart();
 			System.out.println("로그인 페이지입니다.");
 			System.out.println("해당하는 사항에 알맞게 기입해주십시오.");
 
@@ -24,17 +24,19 @@ public class SignView extends BasicView {
 
 			id = getInput(SignInputType.ID, "ID: ");
 			password = getInput(SignInputType.PW, "PW: ");
-			printPageEnd();
+			
 
 			// SignDB.Login에 ID와 PW를 넘겨주면
 			// DB와 비교를 해서 있는 정보면 account_type을 반환해준다.
 			// 만약 account_type이 0이면 없는 계정, 1: 구매자, 2: 판매자, 3: 관리자
 			if ((account_type = SignDB.login(id, password)) != 0) {
+				printPageEnd();
 				isSignInSuccess = true;
 			} else {
 				printPageMiddle();
 				System.out.println("존재하지 않는 ID이거나 틀린 비밀번호입니다.");
 				System.out.println("다시 입력해주십시오.");
+				printToBeContinue();
 				printPageMiddle();
 			}
 		}

@@ -3,8 +3,11 @@ package Functions;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import DB.VehicleDB;
 
 public class CheckConditions {
 	static private Pattern pattern;
@@ -150,5 +153,81 @@ public class CheckConditions {
 		pattern = Pattern.compile("[a-zA-Z]*");
 		matcher = pattern.matcher(input);
 		return matcher.find();
+	}
+
+	public static boolean isMaker(String input) {
+		ArrayList<String> list = VehicleDB.getMakers();
+		return list.contains(input);
+	}
+
+	public static boolean isModel(String maker, String input) {
+		ArrayList<String> list = VehicleDB.getModel(maker);
+		return list.contains(input);
+	}
+
+	public static boolean isDetailedModel(String model, String input) {
+		ArrayList<String> list = VehicleDB.getDetailedModel(model);
+		return list.contains(input);
+	}
+
+	public static boolean isColorType(String input) {
+		ArrayList<String> list = Utilities.parseMultiValues(input);
+		ArrayList<String> color_list = VehicleDB.getColorType();
+		for (int i = 0; i < list.size(); ++i) {
+			if (!list.contains(color_list.get(i)))
+				return false;
+		}
+		return true;
+	}
+
+	public static boolean isFuelType(String input) {
+		ArrayList<String> list = Utilities.parseMultiValues(input);
+		ArrayList<String> fuel_list = VehicleDB.getFuelType();
+		for (int i = 0; i < list.size(); ++i) {
+			if (!list.contains(fuel_list.get(i)))
+				return false;
+		}
+		return true;
+	}
+
+	public static boolean isTransmission(String input) {
+		ArrayList<String> list = VehicleDB.getTransmissionName();
+		return list.contains(input);
+	}
+
+	public static boolean isEngineDisplacement(String input) {
+		ArrayList<String> list = VehicleDB.getEngineDisplacement();
+		return list.contains(input);
+	}
+
+	public static boolean isCategory(String input) {
+		ArrayList<String> list = VehicleDB.getCategoryName();
+		return list.contains(input);
+	}
+	
+	public static boolean isAge(String input) {
+		if (input.equals("-"))
+			return true;
+
+		pattern = Pattern.compile("[0-9]{4}-[0-9]{2}");
+		matcher = pattern.matcher(input);
+		if (matcher.find())
+			return true;
+		return false;
+	}
+
+	public static boolean checkVehicleInputType(String input, VehicleInputType inputType) {
+		switch (inputType) {
+		case AGE:
+			return isAge(input);
+		case VEHICLE_NUMBER:
+			return isId(input);
+		case MILEAGE:
+			return isInteger(input);
+		case PRICE:
+			return isInteger(input);
+		default:
+			return false;
+		}
 	}
 }

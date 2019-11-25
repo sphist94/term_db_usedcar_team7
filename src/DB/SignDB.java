@@ -58,12 +58,12 @@ public class SignDB {
 				break;
 			case 2:
 				sb = new StringBuffer();
-				sb.append("insert into dealer(Cuid) values ('"+input[0]+"')");
+				sb.append("insert into dealer(Deid) values ('"+input[0]+"')");
 				DBConnection.stmt.executeUpdate(sb.toString());
 				break;
 			case 3:
 				sb = new StringBuffer();
-				sb.append("insert into administrator(Cuid) values ('"+input[0]+"')");
+				sb.append("insert into administrator(Adid) values ('"+input[0]+"')");
 				DBConnection.stmt.executeUpdate(sb.toString());
 				break;
 			}

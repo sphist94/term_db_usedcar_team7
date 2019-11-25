@@ -22,7 +22,7 @@ public class BasicView {
 	}
 
 	public boolean printBack() {
-		final int back_int = 999;
+		final int back_int = -1;
 		printPageMiddle();
 		System.out.println("이전 페이지로 가시려면 " + Integer.toString(back_int) + "을 입력해주십시오.");
 		System.out.println("계속 진행을 원하시면 아무 키나 입력해 주십시오.");
@@ -54,5 +54,10 @@ public class BasicView {
 			System.out.println("다시 입력해주십시오.");
 		}
 		return str;
+	}
+	
+	public void printToBeContinue() {
+		System.out.println("계속 진행을 원하시면 아무 키나 입력하십시오.");
+		sc.nextLine();
 	}
 }

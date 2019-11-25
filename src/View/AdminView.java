@@ -1,8 +1,8 @@
 package View;
 public class AdminView extends AccountView {
 	protected boolean loadAccountPage(String id) {
-		boolean state = true;
-		while (state) {
+		boolean isExit = false;
+		while (!isExit) {
 			printPageStart();
 			System.out.println("현재 판매자 계정으로 로그인이 되었습니다.");
 			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
@@ -13,13 +13,13 @@ public class AdminView extends AccountView {
 			switch (selection) {
 			case 1:
 				//회원탈퇴되면 false를 return 받아 loop가 꺼짐
-				state = loadAccountInformationPage(id);
+				isExit = loadAccountInformationPage(id);
 				break;
 			case 2:
 				loadVehicleSearchPage();
 				break;
 			case 3:
-				state = signOut();
+				isExit = signOut();
 				break;
 			}
 		}
