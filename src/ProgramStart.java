@@ -5,11 +5,11 @@ import DB.InsertionPhase2Sqls;
 public class ProgramStart {
 	public static void main(String[] args) {
 		DBConnection.getConnection();
-//		System.out.println("데이터 초기화 중입니다. 잠시만 기다려 주십시오.");
-//		InsertionPhase2Sqls.readSqlFiles("Team8_phase1.sql");
-//		System.out.println("데이터 입력중입니다. 잠시만 기다려 주십시오.");
-//		InsertionPhase2Sqls.readSqlFiles("Team8_phase2.sql");
-//		System.out.println("기다려주셔서 감사합니다.");
+		System.out.println("데이터 초기화 중입니다. 잠시만 기다려 주십시오.");
+		InsertionPhase2Sqls.readSqlFiles("Team8_phase1.sql");
+		System.out.println("데이터 입력중입니다. 잠시만 기다려 주십시오.");
+		InsertionPhase2Sqls.readSqlFiles("Team8_phase2.sql");
+		System.out.println("기다려주셔서 감사합니다.");
 		MainView mv = new MainView();
 		mv.startPage();
 	}

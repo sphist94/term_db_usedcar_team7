@@ -1,4 +1,7 @@
 package View;
+
+import DB.AccountInfoDB;
+
 public class AdminView extends AccountView {
 	protected boolean loadAccountPage(String id) {
 		boolean isExit = false;
@@ -16,7 +19,7 @@ public class AdminView extends AccountView {
 				isExit = loadAccountInformationPage(id);
 				break;
 			case 2:
-				loadVehicleSearchPage();
+				loadVehicleSearchPage(id);
 				break;
 			case 3:
 				isExit = signOut();
@@ -24,6 +27,40 @@ public class AdminView extends AccountView {
 			}
 		}
 		return true;
+	}
+	
+	public static boolean doGetOffFakeVehicle(String poid, String id) {
+		System.out.println("해당 매물을 허위매물로 내리겠습니까?");
+		System.out.println("1.예  2.아니오");
+		String selection = sc.nextLine();
+		if(selection.equals("1") && AccountInfoDB.getOffTheVehicle(id, poid)) {
+			System.out.println("매물번호  " + poid + " 허위매물로 처리하였습니다.");
+			printToBeContinue();
+			return true;
+			
+		}else {
+			System.out.println("매물번호  " + poid + " 허위매물 처리에 실패했습니다.");
+			//System.out.println("잠시 후에 다시 이용해주세요.");
+			printToBeContinue();
+		}
+		return false;
+	}
+	
+	public static boolean doGetOnFakeVehicle(String poid, String id) {
+		System.out.println("해당 허위매물을 다시 정상매물로 바꾸시겠습니까?");
+		System.out.println("1.예  2.아니오");
+		String selection = sc.nextLine();
+		if(selection.equals("1") && AccountInfoDB.getOnTheVehicle(id, poid)) {
+			System.out.println("매물번호  " + poid + " 정상매물로 바꿨습니다.");
+			printToBeContinue();
+			return true;
+			
+		}else {
+			System.out.println("매물번호  " + poid + " 정상매물 처리에 실패했습니다.");
+			//System.out.println("잠시 후에 다시 이용해주세요.");
+			printToBeContinue();
+		}
+		return false;
 	}
 
 }

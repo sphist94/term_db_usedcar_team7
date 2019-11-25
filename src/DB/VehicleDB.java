@@ -10,7 +10,7 @@ import Functions.CheckConditions;
 public class VehicleDB {
 	public static boolean isSoldVehicle(String poid) {
 		try {
-			String sql = "select orders.Poid from orders where vehicle.orders =" + poid;
+			String sql = "select orders.Poid from orders where orders.Poid =" + poid;
 			ResultSet rs = DBConnection.stmt.executeQuery(sql);
 			if (rs.next())
 				return true;
@@ -312,7 +312,7 @@ public class VehicleDB {
 	public static ArrayList<String[]> getVehicleList() {
 		try {
 			int col_size = 6;
-			String sql = "select vehicle.Poid, Mileage, Price, Maname, Moname, Dename from vehicle, orders where vehicle.Poid <> orders.Poid";
+			String sql = "select vehicle.Poid, Mileage, Price, Maname, Moname, Dename from vehicle where not exists(select * from orders where orders.Poid = vehicle.Poid)";
 			ResultSet rs = DBConnection.stmt.executeQuery(sql);
 			ArrayList<String[]> ret = new ArrayList<>();
 			while (rs.next()) {
@@ -323,6 +323,95 @@ public class VehicleDB {
 				ret.add(temp);
 			}
 			return ret;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return null;
+	}
+
+	public static ArrayList<String[]> getConditionedVehicleList(String[] extra_info, ArrayList<String> colors,
+			ArrayList<String> fuels) {
+		try {
+			String coid = "";
+			String fuid = "";
+			if (colors.size() > 0)
+				coid = getColorId(colors.get(0));
+			if (fuels.size() > 0)
+				fuid = getFuelId(fuels.get(0));
+
+			int col_size = 6;
+			String[] meta_info = { "Age", "Veid", "Mileage", "Price", "Maname", "Moname", "Dename", "Enname", "Trname",
+					"Caname" };
+
+			String sql = "select vehicle.Poid, Mileage, Price, Maname, Moname, Dename from vehicle where ";
+			int cnt = 0;
+			for (int i = 0; i < 10; ++i)
+				if (!extra_info[i].isEmpty())
+					++cnt;
+			for (int i = 0; i < 10; ++i) {
+				if (!extra_info[i].isEmpty()) {
+					--cnt;
+					if (i == 0) {
+						sql += meta_info[i] + ">= '" + extra_info[i] + "'";
+					} else if (i == 2 || i == 3) {
+						sql += meta_info[i] + "<= " + extra_info[i];
+					} else if (i == 7) {
+						sql += meta_info[i] + "= " + extra_info[i] + " ";
+					} else if (i != 9) {
+						sql += meta_info[i] + "= " + "'" + extra_info[i] + "' ";
+					} else {
+						sql += meta_info[i] + "= " + "'" + extra_info[i] + "' ";
+					}
+					if (cnt != 0)
+						sql += " and ";
+				}
+			}
+
+			if (!coid.isEmpty() && !fuid.isEmpty()) {
+				sql += " and exists(select colored.Poid from colored where colored.Coid = " + coid
+						+ "colored.Poid = vehicle.Poid ";
+				sql += " and exists(select fueled.Poid from fueled where fueled.Coid = colored.Poid and fueled.Fuid = "
+						+ fuid + "))";
+			} else if (!coid.isEmpty()) {
+				sql += " and exists(select colored.Poid from colored where colored.Coid = " + coid
+						+ "colored.Poid = vehicle.Poid)";
+			} else if (!fuid.isEmpty()) {
+				sql += " and exists(select fueled.Poid from fueled where fueled.Coid = vehicle.Poid and fueled.Fuid = "
+						+ fuid + ")";
+			}
+
+			ResultSet rs = DBConnection.stmt.executeQuery(sql);
+			ArrayList<String[]> ret = new ArrayList<>();
+			while (rs.next()) {
+				String[] temp = new String[6];
+				for (int i = 1; i <= col_size; ++i) {
+					temp[i - 1] = rs.getString(i);
+				}
+				ret.add(temp);
+			}
+			return ret;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return null;
+	}
+
+	public static ArrayList<String[]> getOwnRegisteredVehicle(String id) {
+		try {
+			String sql = "select vehicle.Poid, Mileage, Price, Maname, Moname, Dename from vehicle where Deid = '" + id
+					+ "'";
+			ResultSet rs = DBConnection.stmt.executeQuery(sql);
+			ArrayList<String[]> ret = new ArrayList<>();
+			while (rs.next()) {
+				String[] temp = new String[6];
+				for (int i = 1; i <= 6; ++i) {
+					temp[i - 1] = rs.getString(i);
+				}
+				ret.add(temp);
+			}
+			if (ret.size() > 0)
+				return ret;
+
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}

@@ -3,7 +3,6 @@ package View;
 import java.util.Arrays;
 
 import DB.AccountInfoDB;
-
 import Functions.CheckConditions;
 import Functions.SignInputType;
 
@@ -201,9 +200,9 @@ abstract public class AccountView extends BasicView {
 		return false;
 	}
 
-	protected boolean loadVehicleSearchPage() {
+	protected boolean loadVehicleSearchPage(String id) {
 		VehicleView vv = new VehicleView();
-		vv.loadVehicleSearchPage();
+		vv.loadVehicleSearchPage(id);
 		return true;
 	}
 

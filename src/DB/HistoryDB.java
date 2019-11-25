@@ -17,8 +17,7 @@ public class HistoryDB {
 			sql = "select * from orders, vehicle where vehicle.Deid = '" + id + "' and vehicle.Poid = orders.Poid";
 			break;
 		case 3:
-			// TODO: 관리자에 이력에 대한 구현이 필요
-			sql = "";
+			sql = "select * from control, vehicle where control.Adid = '" + id + "' and control.Poid = vehicle.Poid";
 			break;
 		}
 
@@ -39,7 +38,7 @@ public class HistoryDB {
 					return ret;
 				}
 			} catch (SQLException e) {
-				System.out.println(e.getMessage());
+				//System.out.println(e.getMessage());
 			}
 		}
 		return null;
