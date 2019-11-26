@@ -11,7 +11,7 @@ abstract public class AccountView extends BasicView {
 	abstract protected boolean loadAccountPage(String id);
 
 	protected boolean signOut() {
-		return false;
+		return true;
 	}
 
 	protected boolean loadAccountInformationPage(String id) {
