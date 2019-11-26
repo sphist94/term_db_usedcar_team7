@@ -13,12 +13,9 @@ public class VehicleView extends BasicView {
 		while (true) {
 			printPageStart();
 			System.out.println("현재 페이지는 매물검색 관련 페이지입니다.");
-
-			if (printBack())
-				break;
-
 			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 			System.out.println("1.전체 검색  2.조건 검색");
+			System.out.println("이전 페이지로 가시려면 -1를 입력해주십시오.");
 			String selection = sc.nextLine();
 			printPageEnd();
 
@@ -27,6 +24,8 @@ public class VehicleView extends BasicView {
 
 			int select = Integer.parseInt(selection);
 			switch (select) {
+			case -1:
+				return;
 			case 1:
 				loadAllVehicleSearchPage(id);
 				break;
@@ -40,6 +39,7 @@ public class VehicleView extends BasicView {
 	private void loadAllVehicleSearchPage(String id) {
 		final int num_list = 10;
 		int cnt = 0;
+		
 		printPageStart();
 		System.out.println("현재 페이지는 전체 매물검색 페이지입니다.");
 		System.out.println(Integer.toString(num_list) + "개의 매물 목록이 검색됩니다.");
@@ -71,16 +71,16 @@ public class VehicleView extends BasicView {
 			}
 			printPageMiddle();
 		}
-		// printPageEnd();
+		printPageEnd();
 	}
 
 	private boolean loadDetailedVehiclePage(String id) {
 		while (true) {
 			System.out.println("더 자세하게 보시고 싶으면 해당 매물번호를 입력해주십시오.");
-			System.out.println("숫자 외의 문자를 입력하면 되돌아갑니다.");
+			System.out.println("이전 페이지로 가시려면 -1를 입력해주십시오.");
 			String poid = sc.nextLine();
 
-			if (!CheckConditions.isInteger(poid))
+			if (!CheckConditions.isInteger(poid) || poid.equals("-1"))
 				break;
 
 			if (!VehicleDB.isSoldVehicle(poid)) {

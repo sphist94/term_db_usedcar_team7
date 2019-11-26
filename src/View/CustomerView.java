@@ -39,7 +39,6 @@ public class CustomerView extends AccountView {
 			return true;
 			
 		}else {
-			System.out.println("매물번호  " + poid + " 구매에 실패했습니다.");
 			System.out.println("잠시 후에 다시 이용해주세요.");
 			printToBeContinue();
 		}

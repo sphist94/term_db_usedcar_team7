@@ -8,6 +8,18 @@ import java.util.ArrayList;
 import Functions.CheckConditions;
 
 public class VehicleDB {
+	public static String getCustmoerByPoid(String poid) {
+		try {
+			String sql = "select Cuid from orders where Poid =" + poid;
+			ResultSet rs = DBConnection.stmt.executeQuery(sql);
+			if (rs.next())
+				return rs.getString(1);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return "";
+	}
+
 	public static boolean isSoldVehicle(String poid) {
 		try {
 			String sql = "select orders.Poid from orders where orders.Poid =" + poid;
@@ -274,7 +286,31 @@ public class VehicleDB {
 		return "";
 	}
 
-	public static boolean updateVehicle(String poid, String deid, String[] extra_info, ArrayList<String> colors,
+	public static boolean insertColoredWithPoid(String poid, String coname) {
+		try {
+			String coid = getColorId(coname);
+			String sql = "insert into colored(Poid, Coid) values (" + poid + ", " + coid + ")";
+			DBConnection.stmt.executeUpdate(sql);
+			return true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return false;
+	}
+
+	public static boolean insertFueledWithPoid(String poid, String funame) {
+		try {
+			String fuid = getFuelId(funame);
+			String sql = "insert into fueled(Poid, Fuid) values (" + poid + ", " + fuid + ")";
+			DBConnection.stmt.executeUpdate(sql);
+			return true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return false;
+	}
+
+	public static boolean insertVehicle(String poid, String deid, String[] extra_info, ArrayList<String> colors,
 			ArrayList<String> fuels) {
 		try {
 			String sql = "insert into VEHICLE (Poid, Deid, Age, Veid, Mileage, Price, Maname, Moname, Dename, Enname, Trname, Caname) values (";
@@ -291,17 +327,85 @@ public class VehicleDB {
 			DBConnection.stmt.executeUpdate(sql);
 
 			for (int i = 0; i < colors.size(); ++i) {
-				String coid = getColorId(colors.get(i));
-				sql = "insert into colored(Poid, Coid) values (" + poid + ", " + coid + ")";
-				DBConnection.stmt.executeUpdate(sql);
+				insertColoredWithPoid(poid, colors.get(i));
 			}
 
 			for (int i = 0; i < fuels.size(); ++i) {
-				String fuid = getFuelId(fuels.get(i));
-				sql = "insert into fueled(Poid, Fuid) values (" + poid + ", " + fuid + ")";
-				DBConnection.stmt.executeUpdate(sql);
+				insertFueledWithPoid(poid, fuels.get(i));
 			}
 
+			return true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return false;
+	}
+
+	public static boolean removeColoredByPoid(String poid) {
+		try {
+			String sql = "delete from colored where Poid = " + poid;
+			DBConnection.stmt.executeUpdate(sql);
+			return true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return false;
+	}
+
+	public static boolean removeFueledByPoid(String poid) {
+		try {
+			String sql = "delete from fueled where Poid = " + poid;
+			DBConnection.stmt.executeUpdate(sql);
+			return true;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		return false;
+	}
+
+	public static boolean updateVehicle(String poid, String[] extra_info, ArrayList<String> colors,
+			ArrayList<String> fuels) {
+		try {
+			String[] meta_info = { "Age", "Vehicle_no", "Mileage", "Price", "Maname", "Moname", "Dename", "Enname",
+					"Trname", "Caname" };
+			String sql = "update vehicle set ";
+			int cnt = 0;
+			for (int i = 0; i < 10; ++i) {
+				if (!extra_info[i].isEmpty()) {
+					++cnt;
+				}
+			}
+
+			int idx = 0;
+			for (int i = 0; i < 10; ++i) {
+				if (!extra_info[i].isEmpty()) {
+					++idx;
+					if (i == 2 || i == 3 || i == 7)
+						sql += meta_info[i] + " = " + extra_info[i] + " ";
+					else
+						sql += meta_info[i] + " = '" + extra_info[i] + "' ";
+					if (idx != cnt)
+						sql += ", ";
+				}
+			}
+
+			if (colors.size() > 0) {
+				removeColoredByPoid(poid);
+				for (int i = 0; i < colors.size(); ++i) {
+					insertColoredWithPoid(poid, colors.get(i));
+				}
+			}
+			if (fuels.size() > 0) {
+				removeFueledByPoid(poid);
+				for (int i = 0; i < fuels.size(); ++i) {
+					insertFueledWithPoid(poid, fuels.get(i));
+				}
+			}
+
+			if (cnt > 0) {
+				sql += " where vehicle.Poid = " + poid;
+				DBConnection.stmt.executeUpdate(sql);
+			}
 			return true;
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
@@ -312,7 +416,9 @@ public class VehicleDB {
 	public static ArrayList<String[]> getVehicleList() {
 		try {
 			int col_size = 6;
-			String sql = "select vehicle.Poid, Mileage, Price, Maname, Moname, Dename from vehicle where not exists(select * from orders where orders.Poid = vehicle.Poid)";
+			String sql = "select vehicle.Poid, Mileage, Price, Maname, Moname, Dename "
+					+ "from vehicle where not exists(" + "select * from orders where orders.Poid = vehicle.Poid) "
+					+ "and not exists(" + "select * from control where control.Poid = vehicle.Poid)";
 			ResultSet rs = DBConnection.stmt.executeQuery(sql);
 			ArrayList<String[]> ret = new ArrayList<>();
 			while (rs.next()) {
@@ -343,14 +449,17 @@ public class VehicleDB {
 			String[] meta_info = { "Age", "Veid", "Mileage", "Price", "Maname", "Moname", "Dename", "Enname", "Trname",
 					"Caname" };
 
-			String sql = "select vehicle.Poid, Mileage, Price, Maname, Moname, Dename from vehicle where ";
-			int cnt = 0;
-			for (int i = 0; i < 10; ++i)
-				if (!extra_info[i].isEmpty())
-					++cnt;
+			String sql = "select vehicle.Poid, Mileage, Price, Maname, Moname, Dename from vehicle";
+
+			boolean isFirst = true;
 			for (int i = 0; i < 10; ++i) {
 				if (!extra_info[i].isEmpty()) {
-					--cnt;
+					if (isFirst) {
+						sql += " where ";
+						isFirst = false;
+					} else {
+						sql += " and ";
+					}
 					if (i == 0) {
 						sql += meta_info[i] + ">= '" + extra_info[i] + "'";
 					} else if (i == 2 || i == 3) {
@@ -362,23 +471,39 @@ public class VehicleDB {
 					} else {
 						sql += meta_info[i] + "= " + "'" + extra_info[i] + "' ";
 					}
-					if (cnt != 0)
-						sql += " and ";
 				}
 			}
 
-			if (!coid.isEmpty() && !fuid.isEmpty()) {
-				sql += " and exists(select colored.Poid from colored where colored.Coid = " + coid
-						+ "colored.Poid = vehicle.Poid ";
-				sql += " and exists(select fueled.Poid from fueled where fueled.Coid = colored.Poid and fueled.Fuid = "
-						+ fuid + "))";
-			} else if (!coid.isEmpty()) {
-				sql += " and exists(select colored.Poid from colored where colored.Coid = " + coid
-						+ "colored.Poid = vehicle.Poid)";
-			} else if (!fuid.isEmpty()) {
-				sql += " and exists(select fueled.Poid from fueled where fueled.Coid = vehicle.Poid and fueled.Fuid = "
-						+ fuid + ")";
+			if (!coid.isEmpty() || !fuid.isEmpty()) {
+				if (isFirst) {
+					sql += " where ";
+					isFirst = false;
+				} else {
+					sql += " and ";
+				}
+				if (!coid.isEmpty() && !fuid.isEmpty()) {
+					sql += " exists(select colored.Poid from colored where colored.Coid = " + coid
+							+ " and colored.Poid = vehicle.Poid) ";
+					sql += " and exists(select fueled.Poid from fueled where fueled.Coid = colored.Poid and fueled.Fuid = "
+							+ fuid + ") ";
+				} else if (!coid.isEmpty()) {
+					sql += " exists(select colored.Poid from colored where colored.Coid = " + coid
+							+ " and colored.Poid = vehicle.Poid) ";
+				} else if (!fuid.isEmpty()) {
+					sql += " exists(select fueled.Poid from fueled where fueled.Coid = vehicle.Poid and fueled.Fuid = "
+							+ fuid + ") ";
+				}
 			}
+
+			if (isFirst) {
+				sql += " where ";
+				isFirst = false;
+			} else {
+				sql += " and ";
+			}
+			// 허위매물 또는 판매된 매물은 제외하는 sql
+			sql += " not exists(select * from orders where orders.Poid = vehicle.Poid) "
+					+ "and not exists(select * from control where control.Poid = vehicle.Poid)";
 
 			ResultSet rs = DBConnection.stmt.executeQuery(sql);
 			ArrayList<String[]> ret = new ArrayList<>();
@@ -390,7 +515,9 @@ public class VehicleDB {
 				ret.add(temp);
 			}
 			return ret;
-		} catch (SQLException e) {
+		} catch (
+
+		SQLException e) {
 			System.err.println(e.getMessage());
 		}
 		return null;
@@ -399,7 +526,8 @@ public class VehicleDB {
 	public static ArrayList<String[]> getOwnRegisteredVehicle(String id) {
 		try {
 			String sql = "select vehicle.Poid, Mileage, Price, Maname, Moname, Dename from vehicle where Deid = '" + id
-					+ "'";
+					+ "' " + " and not exists(select * from orders where orders.Poid = vehicle.Poid) "
+					+ " and not exists(select * from control where control.Poid = vehicle.Poid) ";
 			ResultSet rs = DBConnection.stmt.executeQuery(sql);
 			ArrayList<String[]> ret = new ArrayList<>();
 			while (rs.next()) {

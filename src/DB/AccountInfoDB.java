@@ -121,7 +121,8 @@ public class AccountInfoDB {
 			Calendar c1 = Calendar.getInstance();
 			String strToday = sdf.format(c1.getTime());
 
-			String sql = "insert into control(Date, Adid, Poid) values('" + strToday + "', '" + id + "', " + poid + ")";
+			String sql = "insert into control(Getoff_date, Poid, Adid) values('" + strToday + "', " + poid + ", '" + id
+					+ "')";
 			int res = DBConnection.stmt.executeUpdate(sql);
 			if (res > 0)
 				return true;
@@ -143,19 +144,66 @@ public class AccountInfoDB {
 		return false;
 	}
 
-	//TODO
-//	public static ArrayList<String[]> getSalesForEachMonth(String id, String poid) {
-//		try {
-//			String sql = "select sum(Price) from vehicle, orders where vehicle.Id = '" + id + "' and vehicle.Poid = orders.Poid group by (Age)";
-//			ResultSet rs = DBConnection.stmt.executeQuery(sql);
-//			ArrayList<String[]> ret = new ArrayList<>();
-//			while (rs.next()) {
-//				System.out.println(rs.getString(1) + " " + rs.getString(2));
-//			}
-//		} catch (SQLException e) {
-//			System.err.println(e.getMessage());
-//
-//		}
-//		return null;
-//	}
+	public static ArrayList<String[]> getSalesForEachMonth(String id) {
+		try {
+			String sql = "select sum(Price) as sales, substr(Sold_date, 1, 7) as month  "
+					+ " from orders , (select * from vehicle where vehicle.Deid = '" + id + "') t "
+					+ " where orders.Poid = t.Poid group by(substr(Sold_date, 1, 7))";
+			ResultSet rs = DBConnection.stmt.executeQuery(sql);
+			ArrayList<String[]> ret = new ArrayList<>();
+			while (rs.next()) {
+				String[] temp = new String[2];
+				temp[0] = rs.getString(1);
+				temp[1] = rs.getString(2);
+				ret.add(temp);
+			}
+			return ret;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+
+		}
+		return null;
+	}
+
+	public static ArrayList<String[]> getSalesForEachYear(String id) {
+		try {
+			String sql = "select sum(Price) as sales, substr(Sold_date, 1, 4) as month  "
+					+ " from orders , (select * from vehicle where vehicle.Deid = '" + id + "') t "
+					+ " where orders.Poid = t.Poid group by(substr(Sold_date, 1, 4))";
+			ResultSet rs = DBConnection.stmt.executeQuery(sql);
+			ArrayList<String[]> ret = new ArrayList<>();
+			while (rs.next()) {
+				String[] temp = new String[2];
+				temp[0] = rs.getString(1);
+				temp[1] = rs.getString(2);
+				ret.add(temp);
+			}
+			return ret;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+
+		}
+		return null;
+	}
+
+	public static ArrayList<String[]> getSalesForEachMaker(String id) {
+		try {
+			String sql = "select sum(Price) as sales, Maname as maker  "
+					+ " from orders , (select * from vehicle where vehicle.Deid = '" + id + "') t "
+					+ " where orders.Poid = t.Poid group by(t.Maname)";
+			ResultSet rs = DBConnection.stmt.executeQuery(sql);
+			ArrayList<String[]> ret = new ArrayList<>();
+			while (rs.next()) {
+				String[] temp = new String[2];
+				temp[0] = rs.getString(1);
+				temp[1] = rs.getString(2);
+				ret.add(temp);
+			}
+			return ret;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+
+		}
+		return null;
+	}
 }

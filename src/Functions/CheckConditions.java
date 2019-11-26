@@ -174,7 +174,7 @@ public class CheckConditions {
 		ArrayList<String> list = Utilities.parseMultiValues(input);
 		ArrayList<String> color_list = VehicleDB.getColorType();
 		for (int i = 0; i < list.size(); ++i) {
-			if (!list.contains(color_list.get(i)))
+			if (!color_list.contains(list.get(i)))
 				return false;
 		}
 		return true;
@@ -184,7 +184,7 @@ public class CheckConditions {
 		ArrayList<String> list = Utilities.parseMultiValues(input);
 		ArrayList<String> fuel_list = VehicleDB.getFuelType();
 		for (int i = 0; i < list.size(); ++i) {
-			if (!list.contains(fuel_list.get(i)))
+			if (!fuel_list.contains(list.get(i)))
 				return false;
 		}
 		return true;

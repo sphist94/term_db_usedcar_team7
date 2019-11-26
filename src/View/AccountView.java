@@ -19,15 +19,19 @@ abstract public class AccountView extends BasicView {
 		while (!isExit) {
 			printPageStart();
 			System.out.println("현재 페이지는 회원정보 관련 페이지입니다.");
-			if (printBack())
-				break;
-
 			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 			System.out.println("1.회원정보 수정  2.비밀번호 수정  3.히스토리 조회  4.회원탈퇴");
-			int selection = sc.nextInt();
+			System.out.println("이전 페이지로 가시려면 -1를 입력해주십시오.");
+			String selection = sc.nextLine();
 			printPageEnd();
 
-			switch (selection) {
+			if (!CheckConditions.isInteger(selection))
+				continue;
+
+			int select = Integer.parseInt(selection);
+			switch (select) {
+			case -1:
+				return false;
 			case 1:
 				loadAccountInfoResetPage(id);
 				break;

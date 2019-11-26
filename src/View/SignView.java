@@ -8,9 +8,10 @@ import java.util.Arrays;
 import DB.SignDB;
 
 public class SignView extends BasicView {
-	String id = "";
-	String password = "";
+
 	public void loadSignIn() {
+		String id = "";
+		String password = "";
 		boolean isSignInSuccess = false;
 		int account_type = 0;
 		// 로그인 실패시 계속해서 이 페이지에 머물면서 로그인을 시도
@@ -18,17 +19,16 @@ public class SignView extends BasicView {
 		while (!isSignInSuccess) {
 			System.out.println("로그인 페이지입니다.");
 			System.out.println("해당하는 사항에 알맞게 기입해주십시오.");
-
-			if (printBack())
-				break;
-
+			System.out.println("이전 페이지로 가시려면 ID에 -1를 입력해주십시오.");
 			id = getInput(SignInputType.ID, "ID: ");
+			if(id.contentEquals("-1"))
+				break;
 			password = getInput(SignInputType.PW, "PW: ");
 			
 
 			// SignDB.Login에 ID와 PW를 넘겨주면
 			// DB와 비교를 해서 있는 정보면 account_type을 반환해준다.
-			// 만약 account_type이 0이면 없는 계정, 1: 구매자, 2: 판매자, 3: 관리자
+			// 만약 account_type이 0이면 없는 계정, 1: 구매자, 2: 판매자, 3: 관리자ㅉ
 			if ((account_type = SignDB.login(id, password)) != 0) {
 				printPageEnd();
 				isSignInSuccess = true;

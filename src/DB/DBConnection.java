@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBConnection {
-	public static final String URL="jdbc:oracle:thin:@localhost:1600:xe";
+	public static final String URL="jdbc:oracle:thin:@localhost:56566:xe";
 	public static final String USER="system";
 	public static final String PASSWD="oracle";
 	
