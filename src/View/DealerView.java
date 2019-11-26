@@ -15,7 +15,6 @@ public class DealerView extends AccountView {
 		while (!isExit) {
 			printPageStart();
 			System.out.println("현재 판매자 계정으로 로그인이 되었습니다.");
-			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 			System.out.println("1.회원정보  2.매물검색  3.매물등록  4.등록매물 조회  5.매출통계 조회  6.로그아웃");
 			String selection = sc.nextLine();
 			printPageEnd();
@@ -52,12 +51,13 @@ public class DealerView extends AccountView {
 		while (true) {
 			printPageStart();
 			System.out.println("현재 페이지는 매출통계 관련 페이지입니다.");
-			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 			System.out.println("1.월별 매출액  2.연도별 매출액  3.제조사별 매출액");
+			System.out.println("이전 페이지로 가시려면 -1를 입력해주십시오.");
 			String selection = sc.nextLine();
 
 			ArrayList<String[]> list = new ArrayList<>();
-			if (selection.equals("1")) {
+			if(selection.equals("-1")) break;
+			else if (selection.equals("1")) {
 				list = AccountInfoDB.getSalesForEachMonth(id);
 			} else if (selection.equals("2")) {
 				list = AccountInfoDB.getSalesForEachYear(id);
@@ -97,10 +97,9 @@ public class DealerView extends AccountView {
 				}
 			}
 
-			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 			System.out.println("1.매물정보 수정  2.매물상세정보 보기");
 			System.out.println("이전 페이지로 가시려면 -1를 입력해주십시오.");
-			// 버퍼 비우기
+
 			String selection = sc.nextLine();
 			if (selection.equals("-1"))
 				break;
@@ -135,7 +134,6 @@ public class DealerView extends AccountView {
 		boolean isExit = false;
 		while (!isExit) {
 			printPageMiddle();
-			System.out.println("입력하고자 하는 사항을 선택해주십시오. 전부 입력해야합니다.");
 			System.out.println("1.연식  2.차량번호  3.주행거리  4.가격  5.제조사  6.모델  7.세부모델  8.배기량  9.변속기  10.차종  11.색상  12.연료");
 			System.out.println("색상이 여러 색상을 가지고 있거나, 연료가 하이브리드일 시 쉼표(,)로 구분해주세요.");
 			System.out.println("완료를 원하시면 13, 종료를 원하시면 14를 입력해주세요");
@@ -263,7 +261,7 @@ public class DealerView extends AccountView {
 		while (!isExit) {
 			printPageMiddle();
 			System.out.println("현재 페이지는 차량등록 페이지입니다.");
-			System.out.println("입력하고자 하는 사항을 선택해주십시오. 전부 입력해야합니다.");
+			System.out.println("입력하고자 하는 사항을 선택해주십시오. 모두 입력해주십시오.");
 			System.out.println("1.연식  2.차량번호  3.주행거리  4.가격  5.제조사  6.모델  7.세부모델  8.배기량  9.변속기  10.차종  11.색상  12.연료");
 			System.out.println("색상이 여러 색상을 가지고 있거나, 연료가 하이브리드일 시 쉼표(,)로 구분해주세요.");
 			System.out.println("완료를 원하시면 13, 종료를 원하시면 14를 입력해주세요");

@@ -19,7 +19,6 @@ abstract public class AccountView extends BasicView {
 		while (!isExit) {
 			printPageStart();
 			System.out.println("현재 페이지는 회원정보 관련 페이지입니다.");
-			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 			System.out.println("1.회원정보 수정  2.비밀번호 수정  3.히스토리 조회  4.회원탈퇴");
 			System.out.println("이전 페이지로 가시려면 -1를 입력해주십시오.");
 			String selection = sc.nextLine();
@@ -55,8 +54,8 @@ abstract public class AccountView extends BasicView {
 		while (cnt < 3) {
 			printPageMiddle();
 			System.out.println("본인확인을 위해 비밀번호를 입력해주십시오.");
-			// 버퍼 비우기
-			sc.nextLine();
+//			// 버퍼 비우기
+//			sc.nextLine();
 			String password = getInput(SignInputType.PW, "비밀번호: ");
 
 			if (AccountInfoDB.isEuqalPassword(id, password)) {
@@ -109,8 +108,6 @@ abstract public class AccountView extends BasicView {
 		while (true) {
 			printPageStart();
 			System.out.println("현재 페이지는 회원정보 수정 페이지입니다.");
-			System.out.println("입력하고자 하는 사항을 선택해주십시오.");
-			System.out.println("해당하는 사항에 알맞게 기입해주십시오.");
 			System.out.println("1.이름(성 제외)*  2.성  3.휴대전화 번호  4.생년월일  5.성별  6.이메일  7.주소  8.직업");
 			System.out.println("완료를 원하시면 9, 종료를 원하시면 10를 입력해주세요");
 			System.out.println("그 외의 숫자나 문자는 무시됩니다.");
@@ -154,6 +151,7 @@ abstract public class AccountView extends BasicView {
 			String password1 = getInput(SignInputType.PW, "변경 비밀번호: ");
 			String password2 = getInput(SignInputType.PW, "변경 비밀번호 확인: ");
 
+			printPageMiddle();
 			if (password1.equals(password2) && AccountInfoDB.updatePassword(id, password1)) {
 				System.out.println("비밀번호 변경이 완료됐습니다.");
 				System.out.println("다시 로그인 해주십시오.");
@@ -164,7 +162,9 @@ abstract public class AccountView extends BasicView {
 				System.out.println("확인 비밀번호가 일치하지 않습니다.");
 				System.out.println("다시 입력해주십시오.");
 			}
+			printPageMiddle();
 			++cnt;
+			
 		}
 		return false;
 	}
@@ -178,7 +178,6 @@ abstract public class AccountView extends BasicView {
 		while (true) {
 			printPageMiddle();
 			System.out.println("현재 페이지는 회원탈퇴 페이지입니다.");
-			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 			System.out.println("정말로 회원탈퇴를 하시겠습니까?");
 			System.out.println("1.예   2.아니오");
 			System.out.println("");

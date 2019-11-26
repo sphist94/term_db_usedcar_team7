@@ -30,8 +30,10 @@ public class HistoryView extends BasicView {
 			ArrayList<String[]> rs = HistoryDB.getHistories(id, account_type);
 
 			if (rs.size() == 0) {
+				printPageMiddle();
 				System.out.println("현재 계정의 히스토리 내역은 존재하지 않습니다.");
 				System.out.println("이전 페이지로 가시려면 -1를 입력해주십시오.");
+				printPageMiddle();
 				if (sc.nextLine().equals("-1"))
 					break;
 			} else {
