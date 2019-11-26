@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import DB.AccountInfoDB;
+import DB.AccountType;
 import DB.VehicleDB;
 import Functions.CheckConditions;
 import Functions.Utilities;
@@ -264,12 +265,12 @@ public class VehicleView extends BasicView {
 		}
 		System.out.println("판매자 휴대전화번호: " + AccountInfoDB.getPhoneNumber(vehicle_info[1]));
 
-		int account_type = AccountInfoDB.getAccountType(id);
+		AccountType account_type = AccountInfoDB.getAccountType(id);
 		switch (account_type) {
-		case 1:
+		case CUSTOMER:
 			CustomerView.doBuyTheVehicle(poid, id);
 			break;
-		case 3:
+		case ADMINISTRATOR:
 			AdminView.doGetOffFakeVehicle(poid, id);
 			break;
 		default:

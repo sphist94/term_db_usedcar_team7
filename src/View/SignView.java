@@ -5,30 +5,32 @@ import Functions.SignInputType;
 
 import java.util.Arrays;
 
+import DB.AccountInfoDB;
+import DB.AccountType;
 import DB.SignDB;
 
 public class SignView extends BasicView {
 
 	public void loadSignIn() {
-		String id = "";
-		String password = "";
 		boolean isSignInSuccess = false;
-		int account_type = 0;
 		// 로그인 실패시 계속해서 이 페이지에 머물면서 로그인을 시도
 		printPageStart();
+		String id = "";
+		String password = "";
 		while (!isSignInSuccess) {
 			System.out.println("로그인 페이지입니다.");
 			System.out.println("이전 페이지로 가시려면 ID에 -1를 입력해주십시오.");
-			id = getInput(SignInputType.ID, "ID: ");
-			if(id.contentEquals("-1"))
-				break;
-			password = getInput(SignInputType.PW, "PW: ");
-			
+			System.out.print("아이디: ");
+			id = sc.nextLine();
+			if (id.equals("-1")) {
+				printPageEnd();
+				return;
+			}
+			System.out.print("비밀번호: ");
+			password = sc.nextLine();
 
 			// SignDB.Login에 ID와 PW를 넘겨주면
-			// DB와 비교를 해서 있는 정보면 account_type을 반환해준다.
-			// 만약 account_type이 0이면 없는 계정, 1: 구매자, 2: 판매자, 3: 관리자ㅉ
-			if ((account_type = SignDB.login(id, password)) != 0) {
+			if (SignDB.login(id, password)) {
 				printPageEnd();
 				isSignInSuccess = true;
 			} else {
@@ -40,19 +42,22 @@ public class SignView extends BasicView {
 		}
 
 		// account_type에 따른 뷰 호출
+		AccountType account_type = AccountInfoDB.getAccountType(id);
 		if (isSignInSuccess) {
 			switch (account_type) {
-			case 1:
+			case CUSTOMER:
 				CustomerView cv = new CustomerView();
 				cv.loadAccountPage(id);
 				break;
-			case 2:
+			case DEALER:
 				DealerView dv = new DealerView();
 				dv.loadAccountPage(id);
 				break;
-			case 3:
+			case ADMINISTRATOR:
 				AdminView av = new AdminView();
 				av.loadAccountPage(id);
+				break;
+			default:
 				break;
 			}
 		}

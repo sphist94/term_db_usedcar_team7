@@ -19,19 +19,21 @@ public class SignDB {
 		}
 	}
 
-	public static int login(String id, String password) {
+	public static boolean login(String id, String password) {
 		try {
+			if(AccountInfoDB.didWithdrawnAccountById(id))
+				return false;
+			
 			DBConnection.stmt = DBConnection.conn.createStatement();
 			String sql = "select Id, Password, Account_type from Account" + " where Id=" + "'" + id + "'";
 			ResultSet rs = DBConnection.stmt.executeQuery(sql);
 			// 회수해온 아이디 비밀번호가 전부 동일한 경우
 			if (rs.next() && id.equals(rs.getString(1)) && password.equals(rs.getString(2)))
-				return Integer.parseInt(rs.getString(3));
-			return 0;
+				return true;
 		} catch (SQLException ex2) {
 			System.err.println(ex2.getMessage());
-			return 0;
 		}
+		return false;
 	}
 
 	public static boolean signUp(String[] input, String account_type) {

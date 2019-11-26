@@ -6,18 +6,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class HistoryDB {
-	public static ArrayList<String[]> getHistories(String id, int account_type) {
+	public static ArrayList<String[]> getHistories(String id, AccountType account_type) {
 		String sql = "";
 
 		switch (account_type) {
-		case 1:
+		case CUSTOMER:
 			sql = "select * from orders where Cuid='" + id + "'";
 			break;
-		case 2:
+		case DEALER:
 			sql = "select * from orders, vehicle where vehicle.Deid = '" + id + "' and vehicle.Poid = orders.Poid";
 			break;
-		case 3:
+		case ADMINISTRATOR:
 			sql = "select * from control, vehicle where control.Adid = '" + id + "' and control.Poid = vehicle.Poid";
+			break;
+		default:
 			break;
 		}
 
@@ -38,7 +40,7 @@ public class HistoryDB {
 					return ret;
 				}
 			} catch (SQLException e) {
-				//System.out.println(e.getMessage());
+				System.err.println(e.getMessage());
 			}
 		}
 		return null;

@@ -461,15 +461,15 @@ public class VehicleDB {
 						sql += " and ";
 					}
 					if (i == 0) {
-						sql += meta_info[i] + ">= '" + extra_info[i] + "'";
+						sql += meta_info[i] + " >= '" + extra_info[i] + "' ";
 					} else if (i == 2 || i == 3) {
-						sql += meta_info[i] + "<= " + extra_info[i];
+						sql += meta_info[i] + " <= " + extra_info[i];
 					} else if (i == 7) {
-						sql += meta_info[i] + "= " + extra_info[i] + " ";
+						sql += meta_info[i] + " = " + extra_info[i] + " ";
 					} else if (i != 9) {
-						sql += meta_info[i] + "= " + "'" + extra_info[i] + "' ";
+						sql += meta_info[i] + " = " + "'" + extra_info[i] + "' ";
 					} else {
-						sql += meta_info[i] + "= " + "'" + extra_info[i] + "' ";
+						sql += meta_info[i] + " = " + "'" + extra_info[i] + "' ";
 					}
 				}
 			}
@@ -484,13 +484,13 @@ public class VehicleDB {
 				if (!coid.isEmpty() && !fuid.isEmpty()) {
 					sql += " exists(select colored.Poid from colored where colored.Coid = " + coid
 							+ " and colored.Poid = vehicle.Poid) ";
-					sql += " and exists(select fueled.Poid from fueled where fueled.Coid = colored.Poid and fueled.Fuid = "
+					sql += " and exists(select fueled.Poid from fueled where vehicle.Poid = fueled.Poid and fueled.Fuid = "
 							+ fuid + ") ";
 				} else if (!coid.isEmpty()) {
 					sql += " exists(select colored.Poid from colored where colored.Coid = " + coid
 							+ " and colored.Poid = vehicle.Poid) ";
 				} else if (!fuid.isEmpty()) {
-					sql += " exists(select fueled.Poid from fueled where fueled.Coid = vehicle.Poid and fueled.Fuid = "
+					sql += " exists(select fueled.Poid from fueled where fueled.Fuid = vehicle.Poid and fueled.Fuid = "
 							+ fuid + ") ";
 				}
 			}
