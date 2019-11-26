@@ -14,7 +14,7 @@ public class CustomerView extends AccountView {
 			String selection = sc.nextLine();
 			printPageEnd();
 			
-			if(CheckConditions.isInteger(selection))
+			if(!CheckConditions.isInteger(selection))
 				continue;
 			
 			int select = Integer.parseInt(selection);

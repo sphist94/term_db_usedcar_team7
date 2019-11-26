@@ -1,6 +1,7 @@
 package View;
 
 import DB.AccountInfoDB;
+import Functions.CheckConditions;
 
 public class AdminView extends AccountView {
 	protected boolean loadAccountPage(String id) {
@@ -10,10 +11,12 @@ public class AdminView extends AccountView {
 			System.out.println("현재 관리자 계정으로 로그인이 되었습니다.");
 			System.out.println("원하시는 기능에 맞는 숫자를 입력해주십시오.");
 			System.out.println("1.회원정보  2.매물검색  3.로그아웃");
-			int selection = sc.nextInt();
+			String selection = sc.nextLine();
 			printPageEnd();
-
-			switch (selection) {
+			
+			if(!CheckConditions.isInteger(selection));
+			int select = Integer.parseInt(selection);
+			switch (select) {
 			case 1:
 				//회원탈퇴되면 false를 return 받아 loop가 꺼짐
 				isExit = loadAccountInformationPage(id);
