@@ -11,7 +11,6 @@ import Functions.CheckConditions;
 public class AccountInfoDB {
 	public static int getAccountType(String id) {
 		try {
-			DBConnection.stmt = DBConnection.conn.createStatement();
 			String sql = "select Account_type from Account where Id = '" + id + "'";
 			ResultSet rs = DBConnection.stmt.executeQuery(sql);
 			if (rs.next() && CheckConditions.isInteger(rs.getString(1))) {
@@ -26,7 +25,6 @@ public class AccountInfoDB {
 
 	public static boolean isEuqalPassword(String id, String password) {
 		try {
-			DBConnection.stmt = DBConnection.conn.createStatement();
 			String sql = "select Password from Account where Id = '" + id + "'";
 			ResultSet rs = DBConnection.stmt.executeQuery(sql);
 
@@ -41,7 +39,6 @@ public class AccountInfoDB {
 
 	public static boolean updatePassword(String id, String password) {
 		try {
-			DBConnection.stmt = DBConnection.conn.createStatement();
 			String sql = "update Account set Password=" + password + " where Id=" + "'" + id + "'";
 			DBConnection.stmt.executeQuery(sql);
 			return true;
@@ -51,13 +48,25 @@ public class AccountInfoDB {
 		}
 	}
 
-	// TODO:
-	// DB에서 삭제시 무결성 제약조건을 어김
-	// 그에대한 해결이 필요
 	public static boolean WidthDrawal(String id) {
 		try {
-			DBConnection.stmt = DBConnection.conn.createStatement();
-			String sql = "delete from Account where Id= '" + id + "'";
+			int account_type = getAccountType(id);
+			String sql = "delete from ";
+			switch (account_type) {
+			case 1:
+				sql += "customer where Cuid = '";
+				break;
+			case 2:
+				sql += "dealer where Deid = '";
+				break;
+			case 3:
+				sql += "administrator where Adid = '";
+				break;
+			}
+			sql += id + "'";
+			
+			DBConnection.stmt.executeQuery(sql);
+			sql = "delete from Account where Id= '" + id + "'";
 			DBConnection.stmt.executeQuery(sql);
 			return true;
 		} catch (SQLException e) {
@@ -68,8 +77,6 @@ public class AccountInfoDB {
 
 	public static boolean updateAccountInfo(String id, String input[]) {
 		try {
-			DBConnection.stmt = DBConnection.conn.createStatement();
-
 			final String[] attributes = { "Lname", "Fname", "Phone_no", "Birth_date", "Gender", "Email", "Address",
 					"Occupation" };
 
